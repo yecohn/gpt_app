@@ -1,0 +1,739 @@
+Hey everybody, welcome to the podcast.
+My guest today is Dr. Andrew Huberman.
+Andrew is a neuroscientist.
+He's a Neurobiology Professor at Stanford Medical School
+and McKnight Foundation and Pew Foundation Fellow
+and the founder of Huberman Lab, where he's involved
+in all kinds of really amazing breakthrough research
+on brain function, brain plasticity and brain regeneration.
+His work has been published in top journals like Nature.
+He's been featured in publications
+like Time, Scientific America and the BBC.
+And he's here today to discuss the brain,
+to discuss growth mindset, how to focus,
+how to navigate the stressful times and many other subjects.
+
+It's an incredible conversation.
+I think you guys are gonna enjoy it.
+I appreciate you watching
+make sure to hit that subscribe button
+and without further ado, this is me
+and Dr. Andrew Huberman.
+
+First of all, thanks for doing this.
+I appreciate you coming out.
+Yeah, my pleasure. Long time coming.
+I'm glad we're doing it in person-
+Likewise. And not remotely.
+And I think what I wanna do is start with your origin story,
+
+because you're a very,
+it's your path is very unlikely,
+your path to becoming a scientist.
+And I think it actually also kind of contextualizes
+some of the things that I wanna talk about with you today.
+So maybe start there.
+Sure, so on the one hand, you know,
+maybe I was faded to become a scientist.
+I guess the two things that are relevant there
+are I always loved animals
+and I've always been obsessed with animal behavior.
+Like just could watch Cousteau shows growing up, you know
+underwater life or animals hunting, animals doing anything.
+It's just so fascinating to me because I'm, I think even
+at a really young age, I've always just been intrigued
+in sort of what drives different animals to behave
+in the way they do and how body form matches to,
+I didn't know what it was,
+but brains and how that all works.
+So I've always been obsessed with animals.
+And then my dad's a scientist, so he's a physicist.
+It was really early in chaos theory.
+And so growing up in our home, you know, we had scientists
+over for dinner and graduate students would come over
+for barbecues and things like that.
+Is he a Stanford professor?
+Yeah, he was at Stanford.
+He was mostly at Xerox Park, which is kind of famous
+if you read the Steve Jobs book is for the, yeah.
+The development of the gooey interface
+the graphical user interface
+and sort of early days of the computer.
+So he had a lab there and he had a lab in applied physics
+at Stanford and something called symbolic systems
+which is a Stanford degree
+in kind of ecology and computation, that kind of thing.
+So I grew up in this family where science was very prominent
+and we had lots of discussions
+in our home that I would overhear
+and I didn't understand about physics and we'd spend summers
+at the Aspen Center for Physics, which was like-
+Good times. Yeah, so, you know,
+and we were, and to be clear, you know,
+you hear the word Aspen, you know,
+we were a middle-class family
+but they have this Aspen Center for Physics.
+So the Feynman, you know, Richard Feynman was there,
+Murray Gell-mann,
+like all these luminaries of physics, Peter Carruthers.
+And my dad was really good at telling me the stories
+about these guys and then I'd always wanna meet them.
+And it was mostly guys back then,
+there weren't many women in physics.
+So I, you know, I was kind of immersed in science
+from a young age, but right about age 13,
+
+my parents split up.
+And he moved overseas, he moved to Denmark
+and my mom was really struggling with the breakup
+and I wasn't in contact with him anymore.
+So I had this really unusual childhood where, you know,
+we didn't talk about sports, we talked about science,
+and I had this close relationship with science
+and the people around science
+but then all of a sudden the structure around family
+like instead of dinners together every night,
+it was just like me and my mom
+and I was an adolescent, I was hitting puberty.
+So, you know, there was bound to be some shifts
+in my world landscape and internal landscape anyway.
+But basically what happened was, I stopped
+really paying attention to school.
+And I got really heavily into skateboarding
+and the kind of punk rock music.
+And I found my pack or my community
+through like packing community of kids
+that also just were kind of parentless.
+So this was like late 80s, early 90s.
+And so at a pretty young age, I started taking the,
+I grew up in Palo Alto.
+I was actually born at Stanford Hospital.
+I started taking the seven F bus up to San Francisco
+and hanging around in Embarcadero.
+For the skateboarders out there, the Lizards,
+this is the the now famous EMB crowd.
+So this was the birth of a huge movement
+of skateboarders that became professionals.
+Like, so you'd see the young Danny Way
+would come through town and you had Rob Dyrdek.
+I remember when he came through.
+So all these names that eventually became popular
+during the kind of X games era and the,
+but at that time it was really underground.
+And so it was this pack of maybe a hundred guys
+and it was run like a little city and it was chaos.
+It was like there was fights,
+and there was drinking and there was lawlessness,
+there was also a lot of amazing skateboarding
+and there were a lot of amazing people.
+And there were some older guys,
+like one in particular, a very famous skateboarder,
+is this kid, Mike Carroll,
+his older brother was kind of like the older brother
+to everybody, kind of kept us all in check.
+So it had its own unique organization.
+And it's actually interesting
+'cause the same thing was happening at that time
+in Washington Square Park in New York,
+and at Love Park in Philadelphia, there were all these
+like communities of kids that were basically parentless.
+And so in that time I saw some interesting things.
+First of all, I learned what it was to be parentless.
+Growing up in Palo Alto,
+it was like soccer games and AYSO and you know,
+swim club and all of a sudden I realized, you know,
+I don't have to be home at any particular time,
+or, you know, none of these kids are going to school.
+And so we all, it was kind of a big group of truants.
+And it was interesting because it gave me a perspective
+that I had never had in Palo Alto.
+And I was drifting further and further away
+from any kind of academic rigor.
+I think I would go to school every once in a while.
+What's mom doing?
+Does she have any idea
+that you're going up to the city every day?
+So she was totally checked out.
+You know, I think she was just devastated
+by a bunch of things that were happening
+and she lapsed into a pretty serious depression.
+And then in that community, what was interesting is,
+I started seeing that, you know, some guys were clearly
+faded to becoming professional skateboarders.
+They were really good at it.
+I just wanna say for full disclosure,
+I was not particularly good.
+I kept getting injured.
+I just, I was not faded to be, you know, exceptional
+or very good at it, but I love the comradery
+and I love the community, but I also noticed that, you know,
+some people were drinking all day and other people got
+into hard drugs and people started to, you know,
+some of the dysfunction really started to show up.
+Yeah, the fracture.
+Yeah, the fracture. Begins.
+Exactly, and so,
+and I started seeing that, lot, a lot more violence.
+You know, people start getting their girlfriends pregnant.
+They didn't have money to support those kids.
+You know, it started becoming apparent to me
+that there was a lot of dysfunction
+as well as a lot of incredible people in that community.
+And so about that time, I got a girlfriend,
+and the other thing was I got removed from high school.
+So I went to kind of the famed/infamous high school
+in Palo Alto, Gunn High School.
+Oh, you went to Gunn.
+I went to Gunn, which is famous because it's the,
+one of the most academically rigorous schools
+in the country, maybe the planet,
+people moved to the area just to send their kids there.
+But it also has this very complicated reputations
+of the highest suicide rate of any school in the country.
+The New York Times has written about this.
+So, you know, I would come to school every once in a while
+but I could tell you far more about the curbs
+in the front of the Gunn High School parking lot
+than I could about anything that I learned at Gunn.
+So when they say they, you were removed,
+I mean, you got, you were expelled.
+No, I basically, they just said,
+you need to either start coming to school or, you know-
+You're done. Or you're done.
+So I got shifted to another high school
+and that was same story.
+It was just was, it was a mess, it just fell apart.
+And so at one point I was brought in, I have a kind
+of vague recollection of this, but I was brought in
+to have a discussion with a school counselor.
+And I don't think I've ever told this story before.
+And there was someone sitting in the corner,
+this guy was sitting in the corner
+and he didn't introduce himself.
+And pretty soon I realized when I was like,
+I think they're gonna take me away.
+Like I started realized, 'cause they realized my mom
+wasn't really able to control me.
+Wasn't really in a place to support me at that time.
+And that's what they did.
+They took me away.
+They took me into a place up the peninsula,
+which was not a jail and it wasn't a hospital.
+It was just sort of a place where they put kids
+that were- Like some kind of
+GV warehousing situation?
+Yeah, a lot of psychologists,
+lot of locks on doors, lot of,
+lot of kids that, there were 12 of us in there
+at any one time, it was locked down.
+And the first night there,
+I remember I had a roommate who was like really
+into cutting on himself, that kind of thing.
+And he told me, he was like, "Look, if you just
+do what they say here, you'll be outta here in like a month.
+And if you don't, you're gonna be here a very long time."
+And I remember being pretty frightened for the first time.
+And at that point I was like,
+oh my goodness, like, this is bad.
+You know, like, this is bad.
+I'm a long way. It's so hard for me
+to imagine. I know, I know.
+This given you know, who you are and what you do now.
+I know and you know, and it was literally like the kind
+of one phone call a day kind of thing.
+So actually I called I was skateboarding for a company
+in San Francisco.
+I think they put me on out of sympathy
+and I called this guy up and I said, "Look, I've, you know,
+they locked me up, I don't know what to do.
+Can you help me?"
+And he get, and I'll never forget,
+I wanna say his name because you're the most normal guy
+I know.
+Well, he's like-
+The least likely of that crowd.
+Exactly. For that to happen.
+So, in any event, I was permitted to go back to school
+eventually, provided that I went to therapy.
+And so I started going to weekly therapy
+which in the early 90s was kind of a weird thing.
+You would, wouldn't admit it to your friends
+but tweets skateboard around Stanford campus.
+I was doing my thing and then twice a week
+I would go in and see this therapist.
+He's a remarkable guy because A,
+he had deep training in the mind, right?
+And we started talking about what was going on.
+And he really picked up on the fact
+that there was essentially no structure,
+no home life for me, but that I had a strong drive,
+and I was really interested in learning.
+I mean, I was, I was enthusiastic and motivated enough to,
+you know, skateboard as hard as I could,
+even though I wasn't gonna go anywhere with it.
+So at that point, and the fact that I had a girlfriend,
+I started looking for something that I could do.
+And I started at one point
+I thought I'd join the fire service,
+'cause it seemed like the comradery was good.
+At that point, I started strengthening my body a bit
+because I didn't wanna keep getting hurt.
+So I started running, I started lifting weights,
+a football coach at Gunn actually turned me on to fitness.
+It's actually an interesting guy.
+He wrote the script for that movie "Mr. Mom,"
+Oh my God.
+Yeah, because his wife bet him
+that he couldn't do what she could do,
+which was stay home with the kids.
+And he was this big strong football coach.
+And so he made her a bet and he lost.
+And so he wrote that script Michael Keaton played the, yeah.
+So he taught me, he was like, look, you know
+you can't even do a pull up.
+You need to start doing your pull-ups and you start running
+you know, and he said, the fire service
+might be good for you.
+So, I was spinning out, but there were people
+that were willing to kind of, you know,
+point me in the right direction.
+So what ended up happening was my high school girlfriend
+went off to college and I didn't, you know,
+I didn't know what I was gonna do.
+So I actually went and I lived in the parking lot
+outside her dormitory. I just wanted to be near her.
+She was my family at that point.
+A college locally or?
+She was at UC Santa Barbara.
+So you just drove down and-
+I just drove down and I just camped out in the parking lot
+and people, and I was starting to get into some martial arts
+and Thai boxing then.
+So I think I was teaching some Thai boxing,
+self-defense stuff on campus and doing this kind of thing.
+And by the end of that year, I realized
+that I should probably apply to college.
+So I applied to UCSP and somehow I got in,
+Lord knows how I got in.
+I did, 'cause I did eventually graduate high school, barely.
+Got in, and then after a year I just completely flailed it.
+You know, I wasn't going to class.
+I was getting into fights, a lot of that kind of mischief
+and kind of wildness was still in me.
+And what ended up happening was,
+I got into a physical altercation on July 4th, 1994
+with like a bunch of guys.
+And at the end of that, I walked back to the place
+I was staying, and of course I wasn't paying rent
+because I had learned in those years,
+like you can just squat in an empty house.
+So, you know, it's Isla Vista California, you know?
+So I was really running wild and went back
+and just I realized I was like, this picture is really bad.
+You know, at some point,
+this isn't gonna be like a kid who had some problems,
+this is gonna be,
+truly. It's not cute anymore.
+It's not cute anymore And no one,
+no one's gonna make excuses about your upbringing
+or the lack of parenting.
+It just becomes, you just, you're gonna end up
+being a ward of the state.
+I mean, you were, it sounds like you were,
+you were almost a feral animal.
+Totally feral.
+Actually, and I have some close friends
+that's how they they referred to me, that feral.
+And it's funny even to this day, I mean,
+I'll get to where this eventually took me.
+But even to this day, when I go into a home
+where it's clearly like a loving home
+where there's kids are happy
+and there's good food and it's warm and cozy
+I always feel this thing like, wow, like amazing.
+Like I sort of wanna be adopted by them immediately,
+but you know, I'm 45 years old
+so that's not appropriate at this age.
+What's so interesting,
+I keep thinking about David Epstein's book "Range."
+Did you read this book?
+Which is basically this thesis
+that some of the most successful people are not,
+you know, we suspect that, you know,
+the great talents of the world across all disciplines
+are the people who discover their passion at an early age
+and practice it voraciously for many, many, many years.
+But in fact, it's people more like yourself,
+who've dabbled in all different kinds of things
+who end up being ultimately, you know,
+the most proficient at their selected skillset.
+And when I look at your experience,
+I see trauma, I see adventure,
+I see, you know, all these obstacles that you've had to face
+and overcome and manage on your own essentially, right?
+And all of those really informed perfectly
+the things that you're interested in
+and what you explore today in your lab.
+Yeah, it really did.
+You know, I think that I'm so grateful for those years.
+I wouldn't wish them on any kid,
+because I think having a secure, loving environment
+at home is so key.
+And, you know, I should say about a third of the kids
+that I grew up with in that environment,
+that whole skateboarding, punk rock culture,
+about a third have gone on to found companies
+or professional skateboarders,
+about a third just kind of drifted off
+and about a third are dead or incarcerated.
+You know, a huge number.
+And so there's real value in having a support system,
+that's clear, but it exposed me
+to all these things like addictions, schizophrenia, rage,
+like all these incredible elements.
+Like I was never really into drinking and drugs.
+I could drink or not drink.
+It just wasn't, I wasn't drawn to it, but other people
+they took one sip and it was like, that was their thing.
+It was like the magic elixir for them.
+And so, you know, I was observing what was happening.
+And then after that, you know, that July 4th '94 incident
+was, I realized this is it, you know, it's now or never.
+It really was one of those moments.
+You know, you hear about those moments
+but it was me realizing I'm living in this squat
+where I've got a pet ferret.
+My girlfriend's gone, she broke up with me.
+She was smart enough to break up with me, you know,
+I'm getting in fights, I'm working at a bagel shop.
+I'm barely making ends meet.
+And at that point I just made the decision.
+I just said, okay, look,
+I'm not gonna be a professional athlete.
+I think I'm pretty good at memorizing things.
+I think I have an interest in people,
+I'm going to just decide, I just decided to do school.
+I decided that was the, that was the track.
+And so like, some people pick the military
+because it's like, if you know what to expect
+at least in terms of the, you know,
+the passages that you're gonna go through.
+And for me that was school.
+And so I had decided, get back in school.
+I moved into a studio apartment by myself.
+I quit partying completely, I didn't go to parties.
+I got really serious about fitness.
+So I just started running and lifting weights and I studied.
+You went like Henry Rollins style.
+I did.
+Yeah.
+I did. It's a lot of self-awareness
+you know, I mean, people go into the military
+because on some level, I mean,
+some people do because they're, there's some yearning
+for having that structure imposed upon their lives.
+But you constructed that kind of structure for yourself.
+
+Yeah, I think I was really afraid.
+I think I was like, you know, and I and these days,
+you know, 'cause of my lab studies fear
+and I get into this whole thing around mindsets
+and people always ask me like,
+is it better to do something from a place of love or fear?
+Like depends.
+And at that point, fear was the best motivator for me.
+And I just basically worked like crazy.
+And it's interesting because I didn't have a mentor
+or someone to bring me to that.
+But once I started doing that, you know,
+there was one professor in particular who took note,
+he was like, "Oh, you know,
+you seem really interested in this stuff."
+And I was like, yeah, 'cause he was teaching me
+about depression, schizophrenia, neuro-chemicals.
+I thought, I was totally turned on
+by the world of neuroscience.
+It didn't, it wasn't even called neuroscience back then.
+But this one guy, Harry Carlisle
+he was teaching me about thermal regulation
+and how the brain works and how receptors
+in the skin relate to perceptions in the mind.
+And he also had a deep sensitivity to mental disease.
+And I'd seen a lot of that, you know,
+I'd seen a lot of depression and anxiety in my own family.
+I had had a friend commit suicide.
+Another friend becomes schizophrenic.
+I think he's still walking the mission district
+of San Francisco now.
+Seeing some friends become addicts.
+And so here was someone explaining that there's actually
+an underlying basis for this.
+And I just poured myself into it.
+Is that the same guy who, you know,
+would smoke underneath the vacuum hood and stuff like that?
+Like a bit of an (indistinct).
+Yeah, he was amazing.
+So he was a favorite teacher of many students,
+but if you could get into his lab
+then you were kind of one of the chosen ones I guess.
+He's like the perfect mentor at the perfect time for you.
+Yeah, so he used to drink coffee in lab
+which you're not supposed to do.
+He's just smoke cigarettes in lab in the fume hood.
+And they used to come and yell at him
+and he would do it anyway.
+And I thought, you know, this guy
+he doesn't even know what it is, but you know,
+he's a punk rocker and he doesn't even know.
+And so, you know,
+he gave me an opportunity to work in his lab.
+And at some point he told me, if you go to graduate school
+they'll actually pay you to do science.
+And what ended up happening at that point
+was I hit a brick wall because I was,
+I had a lot of resentment toward my dad.
+I felt, you know, here's my dad.
+He was a scientist, he had, you know,
+left us all this kind of thing.
+And I realized if I didn't do this,
+if I didn't take this opportunity,
+it was going to be the most foolish thing ever.
+You know, what am I gonna do to spite my, you know,
+my parents, you know, I was 20 years old at that point.
+So I just made the decision.
+I'm gonna get a PhD and become a professor.
+I'm going to get tenure and be like this guy, you know
+this guy who has looked like he had a pretty good life
+to me, and so that's pretty much how I spent the, you know
+the last 25 years of my life is doing experiments.
+It worked out.
+It worked out, is it, a lot of work,
+I mean, I didn't have the power of concentration.
+I hadn't read all the good books that Gunn High School
+students read growing up.
+I had to learn how to speak properly.
+I learned how to, learn how to think properly
+and really learn how to commit to something
+that was very linear and at times was very painful.
+And I went to some pretty extreme things.
+I, you know, I actually used to set a timer
+and I wouldn't allow myself to get out of the chair
+until I was, the timer went off.
+So, and I would experience extreme agitation
+but over time I got pretty good.
+And now I can do long stints of work without any breaks.
+And yeah, it worked out.
+It developed that neuroplasticity
+in your favor, ultimately.
+You're always a reader though, right?
+I loved books.
+So I would, you know, I would hide
+in the tower books section in the evenings
+and I would read everything about fitness, psychology,
+anything I could, I've always devoured information.
+My favorite book when I was a kid was the "Encyclopedia,"
+or the "Guinness Book of World Records."
+So I was like, when I was a little kid,
+I'd walk around the Aspen Center for Physics.
+And I would tell anyone, I didn't even ask them,
+if they want to hear about like the,
+what's the world's smallest ethereum mammal.
+You know, I would like, it could tell you all these facts
+that were kind of meaningless at the time,
+but I've always been fascinated
+by the inventory of different animals on the planet
+and their different behaviors.
+And so yeah, voracious reader and still now.
+I love, I love information.
+Well, as a neuroscientist, I mean,
+you're your own patient.
+I mean, the fact that you were able to, you know,
+turn your life around in such a dramatic fashion
+and do it essentially through sheer will and you know
+setting up practices that would feel you,
+you in that right direction,
+and then being available when those mentors
+showed up from the, from the, you know,
+the early therapist, sounds like that guy
+almost saved your life, right?
+He absolutely saved my life.
+He gave me the book, "Wherever You Go, There You Are"
+the Jon Kabat-Zinn book.
+And he said, no pressure, but if you can develop
+a mindfulness practice where you can sit still
+for like 10 minutes a day, it'll serve you very well.
+So I started doing that.
+Like he could've, he could've told me to hang out
+of a window by my ankles, I would have done it.
+I think there was a, there was a self preservation thing
+was kicking in for me.
+So I got very interested in mindfulness meditation.
+He also, it was, I think, quite smart in saying,
+look there's a whole world of psychedelic drugs
+that are powerful in influencing the mind.
+He said, "If you're going to explore those,
+wait until your brain has already developed,"
+which I think is a controversial statement in and of itself.
+He, so he actively discouraged me to go down that path,
+
+which I think was the right thing,
+given I was a minor, you know,
+and nowadays there's all this discussion now
+about psychedelics and their power.
+And I think they are very interesting compounds
+but he really steered me towards behavioral practices.
+Like what could I do each day from waking up
+to going to sleep that would serve my mental health
+and my productivity well.
+I owe him a tremendous amount.
+And especially because he wasn't just
+in the psychoanalytic theory,
+he also was like cognitive behavioral.
+He understood the power of practices
+not just discussing issues.
+Yeah, to begin a meditation practice at that age
+in the mid 90s, that's pretty radical.
+Yeah, I felt it was funny 'cause I thought
+if I didn't sit in the lotus position
+like I wasn't doing it properly, you know,
+back then there was all this stuff around,
+it was very mystical and in my family
+'cause my dad's very conservative
+and my mom was a little bit more of a free spirit.
+I was taught that anything that related to hippie culture
+was doomed to fail and cause problems.
+And then anything that was related
+to like conservative culture was faded
+to advance the progress of humanity.
+It turned out neither one was true, of course.
+So I, but I needed people to push me in those directions,
+lift weights, run, meditate,
+do your schoolwork, do your homework.
+And so I think I, you know, now I have a good relationship
+with my parents, but I think I had to go out
+into the world and find those, you know, sort of paternal
+and maternal figures because they weren't in my home.
+I needed to find those.
+Do you look back on your upbringing with gratitude?
+Like how do you reflect on that experience
+and how it informs how you think about what you do now?
+I'm immensely grateful for it because you know,
+where I'm at today is, you know, my lab works on a number
+of issues related, you know, sort of hardcore neurobiology
+of regenerating the brain, you know, trying to fix,
+basically cure blindness and repair visual systems,
+but also things related to, you know, fear, courage,
+mindset, stress, anxiety, trauma, et cetera.
+And the early seed of seeing how science is done,
+definitely gave me an advantage.
+I won't lie, you know, I seeing how scientists interact
+and behave and understanding that they are just people.
+'Cause a lot of what was discussed in my home was
+about the people, not just the science they do,
+that really gave me an advantage.
+And then seeing all that dysfunction and realizing
+that the human animal is amazing at making plans,
+at modifying its brain if it wants to, but the human brain
+and the human animal are also dreadfully bad
+at doing what's best for us.
+Because of this, what I think it comes down to is the fact
+that our reward systems are not designed
+for things that are just good for us.
+They're designed for things that optimize the progression
+of our species, but they're also, they will grab on to
+and ratchet into any behavior that makes us feel good.
+And so the human brain is really not optimized
+for making best choices.
+And so, those years of seeing all that.
+I could testify to that.
+Yeah, it's and it's, I wouldn't trade those years
+for anything.
+And I still have great friends in that community.
+I mean, I think, you know, any, had I joined
+a different community, I would have found the right people
+as well, but to be with a, you know, a huge pack
+of feral kids at that age
+and to see the function and dysfunction
+and also it was wild, it was a lot of fun.
+I can imagine. It was a lot of fun.
+That's a whole set of stories
+for another time. Did you see that movie,
+"Mid 90s?"
+"Mid 90s" and the movie "Kids", the Larry Clark movie.
+When I saw that movie, first of all, I had a lot
+of friends that were in that movie
+'cause he used actual skateboarders.
+In "Kids?"
+Yeah, I actually knew a couple of those kids
+and you know, it's a movie, but there are a lot of things
+about that movie they're very accurate.
+And when I saw that movie
+I was like, yeah, that's like right.
+Pretty much a day in the life in Washington Square Park.
+And you know, I mean it was a little extreme on some end
+but you didn't know where you're gonna end up each night.
+And that was a unique experience, you know?
+So yeah, and "Mid 90s" was really good.
+I think it captured the essence of what it is to be a kid
+that's just looking for some group of people to join.
+And skateboard is a unique sport because you get young kids
+and grown men and now women and girls do it as well.
+It didn't happen so much then, but now there are a lot
+of great, awesome skateboarders that are female
+but they're all hanging out together.
+You wouldn't find that in soccer.
+You're not gonna get little kids playing with grown men.
+So you get exposed to a lot 'cause everyone's
+at develop, different developmental stages.
+But yeah, it was an amazing thing.
+I wouldn't change it for anything.
+Cool, well, let's segue into talking about the brain
+and maybe we could start with, you know,
+how you think about the brain specifically?
+Like, what is the brain, what does it do?
+What does it not do?
+You know, it helps us survive.
+It's our portal into trying to make sense of the world.
+Like what's the starting point
+in the discussion around the brain?
+Yeah, so the brain and nervous system, which
+so it's like brain spinal cord connections
+with the body and back in.
+I don't distinguish between brain and mind.
+I think that's like an 80s discussion or earlier.
+And I think it would take us down the wrong track.
+So brain or mind to me is interchangeable.
+Mind, body, is kind of interchangeable
+because the brain is connected to the body
+and the body is connected to the brain, right?
+If I, you know, pinprick my hand and it hurts
+my brain registers it where it happens
+it's kind of an irrelevant discussion.
+I think we really need to just appreciate
+that the nervous system is designed
+to orchestrate all the processes in the body
+not just thinking and not just behavior
+and really can be divided into five things.
+So there's sensation and sensation is really bound
+or restricted by the receptors in the body.
+So receptors in the eye that perceive photons, light energy
+per se, receptors in the skin that perceive pressure
+you know, touch receptors, smell, taste, hearing, et cetera.
+And the interesting thing about sensation and the fact
+that the nervous system needs to pay attention
+to sensation is it's non-negotiable.
+The nervous system of humans is designed
+to extract physical phenomenon from the universe
+that are non-negotiable, photons of light.
+I can't see in the infrared with my eyes
+and I can't see ultraviolet light with my eyes.
+And I can't perceive that
+because I don't have the receptors for it.
+So, you know, other animals can perceive
+some of those things
+but that leads us to the next thing, which is perception
+which is which sensations are you paying attention to.
+So all the time you're sensing things like right now
+your feet are sensing the contact with your shoes,
+but you're not thinking about it until I say that.
+And then you shift your perception.
