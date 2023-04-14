@@ -23,4 +23,4 @@ while 1:
         play(song)
         wav_file = song
     print("song not play")
-    time.sleep(4)
+    time.sleep(1)

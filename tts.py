@@ -1,5 +1,3 @@
-import os 
-import time
 from TTS.utils.manage import ModelManager
 from TTS.utils.synthesizer import Synthesizer
 import site
@@ -20,25 +18,7 @@ synthesizer = Synthesizer(
     vocoder_config=voc_config_path
 )
 
+text = "Hello from a machine"
 
-with open("output.txt", "r") as f1: 
-    input = f1.read()
-
-while 1: 
-
-    with open("output.txt", "r") as f1: 
-        new_input = f1.read()
-        if new_input != input: 
-            start = time.time()
-            print("file has changed")
-            outputs = synthesizer.tts(new_input)
-            synthesizer.save_wav(outputs, "speech.wav")
-            end = time.time()
-            input = new_input
-            print(f"inference time: {end - start}")
-        print("file has not changed")
-        time.sleep(1)
-
-
-            
-    
+outputs = synthesizer.tts(text)
+synthesizer.save_wav(outputs, "audio-1.wav")

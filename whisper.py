@@ -1,5 +1,6 @@
 import requests
 import time
+import sys
 import sounddevice as sd
 from scipy.io.wavfile import write
 import wavio as wv
@@ -32,8 +33,13 @@ def query(filename):
     response = requests.post(API_URL, headers=headers, data=data)
     return response.json()
 
-
+start = time.time()
 output = query("tmp.wav")
+end = time.time()
 print(output)
+print(f"inference time: {end - start}")
+if "text" not in output.keys():
+    print("model endpoint is not ready for use") 
+    sys.exit()
 with open("input.txt", "w") as f1:
     f1.write(output["text"])
