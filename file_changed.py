@@ -1,5 +1,6 @@
 import os 
 import time
+from gtts import gTTS
 
 
 
@@ -13,11 +14,9 @@ while 1:
         if new_input != input: 
             start = time.time()
             print("file has changed")
-            audio = gTTS(text=new_input, lang="he", slow=False)
+            audio = gTTS(text=new_input, lang="fr", slow=False)
             audio.save("speech.wav")
             os.system("afplay speech.wav")
-            # outputs = synthesizer.tts(new_input)
-            # synthesizer.save_wav(outputs, "speech.wav")
             end = time.time()
             input = new_input
             print(f"inference time: {end - start}")
