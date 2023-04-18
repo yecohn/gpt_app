@@ -23,7 +23,10 @@ wv.write("tmp.wav", recording, freq, sampwidth=2)
 
 
 API_TOKEN = "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"
-API_URL = "https://api-inference.huggingface.co/models/openai/whisper-tiny"
+API_URL = (
+    "https://api-inference.huggingface.co/models/qanastek/whisper-tiny-french-cased"
+)
+
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
 
@@ -33,13 +36,17 @@ def query(filename):
     response = requests.post(API_URL, headers=headers, data=data)
     return response.json()
 
+
 start = time.time()
 output = query("tmp.wav")
 end = time.time()
 print(output)
+hard_coded_prompt = "\n fais moi 2 phrases et une question."
+# if "text" not in output.keys():
+#     print("model endpoint is not ready for use")
+#     sys.exit()
+# output = output["text"] + hard_coded_prompt
 print(f"inference time: {end - start}")
-if "text" not in output.keys():
-    print("model endpoint is not ready for use") 
-    sys.exit()
 with open("input.txt", "w") as f1:
+    print(output["text"])
     f1.write(output["text"])
