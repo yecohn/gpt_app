@@ -1,8 +1,4 @@
-import requests
-import time
-import sys
 import sounddevice as sd
-from scipy.io.wavfile import write
 import wavio as wv
 from google.cloud import speech
 import os
@@ -18,7 +14,7 @@ os.environ[
 class STT:
     hard_coded_prompt = (
         "\n"
-        + "premierement je veux une correction de ma question ensuite je veux une reponse courte er rapide ensuite demande moi une question sur ce sujet de facon naturel et reponds moi le plus rapidement possible"
+        + "je veux une reponse courte er rapide ensuite demande moi une question sur ce sujet de facon naturel et reponds moi le plus rapidement possible"
     )
 
     def __init__(
@@ -28,7 +24,7 @@ class STT:
         stt_config: speech.RecognitionConfig,
         freq: int = 44100,
         duration: int = 5,
-        recording_path: str = "./data/tmp.wav",
+        recording_path: str = "../data/tmp.wav",
     ):
         self.stt_client = stt_client
         self.stt_service = stt_service
@@ -48,16 +44,18 @@ class STT:
         self.write_recording(recording)
 
     def write_recording(self, recording):
-        write(self.recording_path, self.freq, recording)
+        wv.write(self.recording_path, recording, self.freq, sampwidth=2)
 
-    def load_recording(self):
-        with io.open(self.recording_path, "rb") as recorded_file:
+    def load_recording(self, recording_path=None):
+        if not recording_path:
+            with io.open(self.recording_path, "rb") as recorded_file:
+                return recorded_file.read()
+
+        with io.open(recording_path, "rb") as recorded_file:
             return recorded_file.read()
 
-    def get_transcript_from_recording(
-        self,
-    ):
-        data = self.load_recording()
+    def get_transcript_from_recording(self, recording_path=None):
+        data = self.load_recording(recording_path)
         audio = self.stt_service(content=data)
 
         response = self.stt_client.recognize(
@@ -68,8 +66,8 @@ class STT:
         transcript = []
         for result in response.results:
             transcript += result.alternatives[0].transcript
-        transcript += [self.hard_coded_prompt]
-        return "".join(transcript)
+        transcript = "".join(transcript)
+        return (transcript, self.hard_coded_prompt)
 
     def save_transcript(self, transcript, output_path):
         with open(output_path, "w") as transcript_file:
@@ -90,7 +88,7 @@ if __name__ == "__main__":
         audio_channel_count=1,
         language_code="fr-FR",
     )
-    recording_path = "./data/tmp.wav"
+    recording_path = "../data/tmp.wav"
 
     stt = STT(
         stt_client=client,
