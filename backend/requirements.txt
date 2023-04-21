@@ -2,8 +2,10 @@ openai
 sounddevice
 wavio
 google
+google.cloud
 streamlit
 numpy
 pyaudio
 librosa
 scipy
+fastapi[all]
