@@ -12,10 +12,6 @@ os.environ[
 
 
 class STT:
-    hard_coded_prompt = (
-        "\n"
-        + "je veux une reponse courte er rapide ensuite demande moi une question sur ce sujet de facon naturel et reponds moi le plus rapidement possible"
-    )
 
     def __init__(
         self,
@@ -67,7 +63,7 @@ class STT:
         for result in response.results:
             transcript += result.alternatives[0].transcript
         transcript = "".join(transcript)
-        return (transcript, self.hard_coded_prompt)
+        return (transcript)
 
     def save_transcript(self, transcript, output_path):
         with open(output_path, "w") as transcript_file:

@@ -2,10 +2,12 @@ openai
 sounddevice
 wavio
 google
+google.cloud
 streamlit
 numpy
 pyaudio
 librosa
 scipy
-MoviePy
+fastapi[all]
 google-cloud-texttospeech
+ 
