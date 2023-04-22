@@ -82,7 +82,7 @@ if __name__ == "__main__":
     config = speech.RecognitionConfig(
         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
         audio_channel_count=1,
-        language_code="fr-FR",
+        language_code="iw-IL",
     )
     recording_path = "../data/tmp.wav"
 

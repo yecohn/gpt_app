@@ -2,26 +2,46 @@ import os
 import time
 from gtts import gTTS
 from backend.utils import timeit
+from google.cloud import texttospeech
+from abc import ABC, abstractclassmethod
 
 
-class TTS:
-    def __init__(self, output_file="./data/output.txt", tts_algo=gTTS):
-        self.output_file = output_file
-        self.tts_algo = tts_algo
+class BaseTTS:
+    @abstractclassmethod
+    def generate_speech():
+        pass
+
+
+class GCPTTS(BaseTTS):
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+    )
+
+    def __init__(self, language, speaker):
+        self.language = language
+        self.speaker = speaker
+        self.client = texttospeech.TextToSpeechClient()
 
     @property
-    def input(self):
-        with open("./data/output.txt", "r") as f1:
-            return f1.read()
+    def voice(self):
+
+        return texttospeech.VoiceSelectionParams(
+            language_code=self.language,
+            name=self.speaker,
+            ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL,
+        )
 
     @timeit
-    def generate_speech(self, text, audio_path="../data/speech.wav") -> None:
-        """from input file generate speech wav file and save it into audio_path
-
+    def generate_speech(
+        self, text, audio_path="../frontend/src/assets/speech.mp3"
+    ) -> None:
+        """from input file generate speech mp3 file and save it into audio_path
         Args:
-            audio_path (str, optional):. Defaults to '../data/speech.wav'.
+            audio_path (str, optional):. Defaults to '../data/speech.mp3'.
         """
-
-        audio = self.tts_algo(text=text, lang="fr", slow=False)
-        audio.save(audio_path)
-        return audio_path
+        synthesis_input = texttospeech.SynthesisInput(text=text)
+        response = self.client.synthesize_speech(
+            input=synthesis_input, voice=self.voice, audio_config=self.audio_config
+        )
+        with open(audio_path, "wb") as out:
+            out.write(response.audio_content)

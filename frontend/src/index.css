@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html { 
+    background-color: rgb(44, 44, 42);
+}
+
+body {
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+#root {
+    height: 100vh;
+    width: 100vw;
+}
+
+.App {
+    
+    height: 100%;
+    width: 100%;
+}

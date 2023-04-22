@@ -9,3 +9,5 @@ pyaudio
 librosa
 scipy
 fastapi[all]
+google-cloud-texttospeech
+ 
