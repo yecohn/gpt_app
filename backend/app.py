@@ -119,7 +119,6 @@ async def question(audio: UploadFile):
     question = " ".join((transcript, hard_coded))
     start_gpt = time.time()
     answer = gpt.ask_gpt(question)
-    answer = f"c'est super de vouloir apprendre le francais avec moi!"
     global message
     message = answer
     end_gpt = time.time()
@@ -139,33 +138,32 @@ async def question(audio: UploadFile):
         "seconds",
         sep="\n",
     )
-    # _ = tts.generate_speech(answer)
+    _ = tts.generate_speech(answer)
     return {"answer": answer, "transcript": transcript}
 
+#TODO: add a websocket to stream audio to the frontend
+######################### We should move to a websocket architecture for streaming audio ################################
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     print("websocket connected")
+#     await websocket.accept()
+#     data = await websocket.receive_text()
+#     print(data)
+#     current_message = message
+#     while True:
+#         if current_message != message:
+#             current_message = message
+#             print("new message sent")
+#             await websocket.send_text(current_message)
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    print("websocket connected")
-    await websocket.accept()
-    data = await websocket.receive_text()
-    print(data)
-    current_message = message
-    while True:
-        if current_message != message:
-            current_message = message
-            print("new message sent")
-            await websocket.send_text(current_message)
 
-
-@app.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    await manager.connect(websocket)
-    now = datetime.now()
-    current_time = now.strftime("%H:%M")
-    while True:
-        data = await websocket.receive_text()
-        # await manager.send_personal_message(f"You wrote: {data}", websocket)
-        message = {"time": current_time, "clientId": client_id, "message": data}
-        await manager.broadcast(json.dumps(message))
-
-    
+# @app.websocket("/ws/")
+# async def websocket_endpoint(websocket: WebSocket, client_id: int):
+#     await manager.connect(websocket)
+#     now = datetime.now()
+#     current_time = now.strftime("%H:%M")
+#     while True:
+#         data = await websocket.receive_text()
+#         # await manager.send_personal_message(f"You wrote: {data}", websocket)
+#         message = {"time": current_time, "clientId": client_id, "message": data}
+#         await manager.broadcast(json.dumps(message))

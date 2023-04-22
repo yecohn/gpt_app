@@ -9,11 +9,16 @@ function App() {
   const [gptmessage, setGpt] = useState("I am gpt");
   const [usermessage, setUser] = useState("I am User");
   var ws = null
-  useEffect(() => {
-    ws = new WebSocket("ws://localhost:8000/ws")
-    ws.onopen = () => ws.send("Hello from client")
-    ws.onmessage = (e) => { console.log(e) }
-  }, [ws])
+
+  // TODO:
+  // Use webSocket connection and rerender at any change of the connection --> should be
+  // implemented very soon 
+
+  // useEffect(() => {
+  //   ws = new WebSocket("ws://localhost:8000/ws")
+  //   ws.onopen = () => ws.send("Hello from client")
+  //   ws.onmessage = (e) => { console.log(e) }
+  // }, [ws])
 
   const styles = {
     backgroundImage: `url(${image})`,
