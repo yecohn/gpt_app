@@ -7,3 +7,5 @@ numpy
 pyaudio
 librosa
 scipy
+MoviePy
+google-cloud-texttospeech
