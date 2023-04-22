@@ -1,6 +1,5 @@
 import time
 
-
 def timeit(fun):
     def wrapper(*args, **kwargs):
         start = time.time()

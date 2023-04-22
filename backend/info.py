@@ -1,4 +1,4 @@
-dict = {
+info_user = {
     'name': 'Meir',
     'age': '28',
     'job': 'flight test engineer',
