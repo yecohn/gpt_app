@@ -16,6 +16,7 @@ import requests
 from backend.gpt import GPTClient
 from backend.speech_to_text import STT
 from backend.text_to_speech import GCPTTS
+from backend.user import User
 import shutil
 import moviepy.editor as moviepy
 from pathlib import Path
@@ -30,6 +31,8 @@ app = FastAPI()
 manager = ConnectionManager()
 from pydantic import BaseModel
 
+print(os.getcwd())
+
 
 class Item(BaseModel):
     title: str
@@ -39,7 +42,8 @@ class AudioUrl(BaseModel):
     audiourl: str
 
 
-gpt = GPTClient()
+meir = User("Meir")
+gpt = GPTClient(user=meir)
 tts = GCPTTS(language="fr-FR", speaker="fr-FR-Wavenet-A")
 client = speech.SpeechClient()
 freq = 44100
@@ -49,9 +53,9 @@ config = speech.RecognitionConfig(
     audio_channel_count=1,
     language_code="fr-FR",
 )
-recording_path = "../data/tmp.wav"
-recording_path_video = "../data/tmp.webm"
-recording_input_path = "../data/input.wav"
+recording_path = "./data/tmp.wav"
+recording_path_video = "./data/tmp.webm"
+recording_input_path = "./data/input.wav"
 
 stt = STT(
     stt_client=client,
@@ -113,10 +117,10 @@ async def question(audio: UploadFile):
     end_converting = time.time()
     duration_convert = end_converting - start_converting
     start_transcript = time.time()
-    transcript, hard_coded = stt.get_transcript_from_recording(recording_input_path)
+    transcript = stt.get_transcript_from_recording(recording_input_path)
     end_transcript = time.time()
     duration_transcript = end_transcript - start_transcript
-    question = " ".join((transcript, hard_coded))
+    question = transcript
     start_gpt = time.time()
     answer = gpt.ask_gpt(question)
     global message
@@ -141,7 +145,8 @@ async def question(audio: UploadFile):
     _ = tts.generate_speech(answer)
     return {"answer": answer, "transcript": transcript}
 
-#TODO: add a websocket to stream audio to the frontend
+
+# TODO: add a websocket to stream audio to the frontend
 ######################### We should move to a websocket architecture for streaming audio ################################
 # @app.websocket("/ws")
 # async def websocket_endpoint(websocket: WebSocket):

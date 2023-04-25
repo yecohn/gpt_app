@@ -33,7 +33,7 @@ class GCPTTS(BaseTTS):
 
     @timeit
     def generate_speech(
-        self, text, audio_path="../frontend/src/assets/speech.mp3"
+        self, text, audio_path="./frontend/src/assets/speech.mp3"
     ) -> None:
         """from input file generate speech mp3 file and save it into audio_path
         Args:

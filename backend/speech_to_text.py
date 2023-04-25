@@ -12,7 +12,6 @@ os.environ[
 
 
 class STT:
-
     def __init__(
         self,
         stt_client: speech.SpeechClient,
@@ -63,7 +62,7 @@ class STT:
         for result in response.results:
             transcript += result.alternatives[0].transcript
         transcript = "".join(transcript)
-        return (transcript)
+        return transcript
 
     def save_transcript(self, transcript, output_path):
         with open(output_path, "w") as transcript_file:

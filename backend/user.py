@@ -1,18 +1,36 @@
-from backend.info import info_user
+import json
+DB_PATH = "./backend/db.json"
 
 class User:
-    def __init__(self, username = 'FirstUser', level = 'beginner') -> None:
+    def __init__(self, username) -> None:
         self.username = username
-        self.level = level
-        self.userInfo = self.retrievePersonalInfo()
+        self.retrieve_personal_info()
+        # in python class are camelCase: MyClass and functions are snake_case: my_function
 
-    def updatePersonalInfo(self):
-        self.userInfo = info_user
+    def retrieve_personal_info(self):
+        with open(DB_PATH, "r") as f:
+            users = json.load(f).get("Users")
+            user = users[self.username]
+            print(user)
+            return [setattr(self, k, v) for k, v in user.items()]
 
-    def retrievePersonalInfo(self):
-        return info_user
+    def update_personal_info(self, attr, val):
+        with open(DB_PATH, "r") as f:
+            db = json.load(f)
 
-if __name__ == '__main__':
-    pass
-    user = User('Meir', 'beginner')
-    print(user.userInfo['location']['city'])
+        users = db.get("users")
+        user = users.get(self.username)
+        # TODO: add recursive function that will update nested dict (will be replace by real db)
+        user[attr] = val
+        users[self.username] = user
+        db["Users"] = users
+
+        with open(DB_PATH, "w") as f:
+            json.dump(db, f)
+        self.retrieve_personal_info()
+
+
+if __name__ == "__main__":
+    user = User("Meir")
+    user.update_personal_info("level", "intermediate")
+    user.update_personal_info("level", "beginner")
