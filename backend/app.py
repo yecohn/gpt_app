@@ -24,14 +24,13 @@ import time
 from backend.websocket_manager import ConnectionManager
 from datetime import datetime
 import json
+from pydantic import BaseModel
+from db_connector import DBConnector
 
 
 message = ""
 app = FastAPI()
-manager = ConnectionManager()
-from pydantic import BaseModel
-
-print(os.getcwd())
+db_client = DBConnector('speakit')
 
 
 class Item(BaseModel):
@@ -44,6 +43,7 @@ class AudioUrl(BaseModel):
 
 meir = User("Meir")
 gpt = GPTClient(user=meir)
+gpt.initialize_chat()
 tts = GCPTTS(language="fr-FR", speaker="fr-FR-Wavenet-A")
 client = speech.SpeechClient()
 freq = 44100

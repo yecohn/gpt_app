@@ -1,3 +1,4 @@
 {
-    "openai_api_key": "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"
+    "openai_api_key": "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", 
+    "mongo_uri": "mongodb+srv://yehoshua:Yosh051210!@serverlessmongodb.pf1fk7z.mongodb.net/test"
 }

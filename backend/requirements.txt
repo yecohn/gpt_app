@@ -10,4 +10,6 @@ librosa
 scipy
 fastapi[all]
 google-cloud-texttospeech
+pymongo[srv]
+SQLAlchemy
  

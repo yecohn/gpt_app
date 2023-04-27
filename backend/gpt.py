@@ -5,38 +5,44 @@ import os
 import openai
 import enum
 from typing import Dict, List
-from backend.user import User
+from backend.user import User, Level
+from backend.db_connector import DBConnector
 
 
 class GPTClient:
     def __init__(
         self,
         user: User,
+        db_connector: DBConnector,
     ):
         self.user = user
+        self.db_connector = db_connector
 
     @property
     def metadata(self):
         return self._metadata()
 
     def _metadata(self):
-        with open("backend/db.json", "r") as f:
-            _metadata = json.load(f).get("GPT_metadata")
+        _metadata = self.db_connector.find({"name": "GPT_metadata"}, "metadata")
         return _metadata
 
     @property
     def level(self):
-        user_level = self.user.level.upper()
-        return Level.__members__[user_level].value
+        user_level = self.user.level
+        return Level.__members__[user_level].value["gpt"]
 
-    def initialize_chat(self) -> None:
+    def reinitialize_chat(self) -> None:
         """
         Re initialize the chat file by deleting it if there is already a
         conversation inside or by creating it if it does not exist
         """
-        chat_file = self.metadata.get("chat_file")
-        if os.path.exists(chat_file):
-            os.remove(chat_file)
+        if self.user.previous_chat:
+            self.user.previous_chat = None
+            self.db_connector.update(
+                {"username": self.user.username},
+                {"previous_chat": self.user.previous_chat},
+                "users",
+            )
         initial_prompt = self.initial_prompt
         self.store_chat(role="user", content=initial_prompt)
 
@@ -69,6 +75,7 @@ class GPTClient:
             attributes = ("level", "job", "name", "age", "city", "country")
             user_words = {attr: self.user.__getattribute__(attr) for attr in attributes}
             template_text = f_template.read().format(**user_words)
+        print(template_text)
         return template_text
 
     def _api_key(self, config_file="./config.json"):
@@ -91,6 +98,8 @@ class GPTClient:
         """
         return {"role": role, "content": content}
 
+    # I want to add a new object to a collectio
+
     def store_chat(self, role: str, content: str) -> None:
         """
          Write a new answer or question into the chat json file
@@ -98,13 +107,14 @@ class GPTClient:
             role (str):
             content (str):
         """
-        with open(self.metadata.get("chat_file"), "a") as f:
-            json.dump(self.formulate_message(role, content), f)
-            f.write("\n")
+        # TODO: go back on this
+        # self.db_connector.update({"username": self.user.username}, {"$addT"previous_chat": self.retrieve_chat()}, "users")
+        #     self.formulate_message(role, content)
+        #     f.write("\n")
 
     def retrieve_chat(self) -> List[Dict]:
         """
-        Reads the chat json file and returns a message data structure that is taken into argument by the model
+        Reads the chat json file and returns a json message  that is taken into argument by the model
         Returns: List[Dict]: List of messages to be processed by gpt api
         """
         with open(self.metadata.get("chat_file"), "r") as f:
@@ -113,6 +123,7 @@ class GPTClient:
         messages = []
         for obj in json_data:
             messages.append(obj)
+        print(messages)
         return messages
 
     @timeit
@@ -126,27 +137,25 @@ class GPTClient:
         """
         self.question = question
         self.store_chat("user", question)
-
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            temperature=self.level.get("temperature"),  # 0:1
-            top_p=self.level.get("top_p"),  # 0:1, %
-            max_tokens=self.level.get("max_tokens"),  # 0:~4000
-            n=1,
-            stream=True,
-            presence_penalty=self.level.get("presence_penalty"),  # -2:2
-            frequency_penalty=self.level.get("frequence_penalty"),  # -2:2
-            # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
             messages=self.retrieve_chat(),
+            n=1,
+            **self.level
+            # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
         )
         collected_messages = []
-        # Streaming capability not used
-        for chunk in response:
-            chunk_message = chunk["choices"][0]["delta"]
-            collected_messages.append(chunk_message)
+        # if streaming
+        # for chunk in response:
+        #     chunk_message = chunk["choices"][0]["delta"]
+        #     collected_messages.append(chunk_message)
+        # answer = "".join([m.get("content", "") for m in collected_messages])
+
+        # if not streamng
+        answer = response["choices"][0]["message"]["content"]
+        print(answer)
 
         # Build the answer in a string format considering only the content of the message
-        answer = "".join([m.get("content", "") for m in collected_messages])
         self.store_chat("system", answer)
         self.answer = answer
         return answer
@@ -169,21 +178,11 @@ class GPTClient:
             time.sleep(1)
 
 
-class Level(enum.Enum):
-    BEGINNER = {
-        "frequence_penalty": -2,
-        "presence_penalty": 0,
-        "max_tokens": 200,
-        "temperature": 0.2,
-        "top_p": 0.5,
-    }
-
-
 if __name__ == "__main__":
     user1 = User("Meir")
     gpt = GPTClient(
         user=user1,
     )
     openai.api_key = gpt.api_key
-    # gpt.initialize_chat()
-    print(gpt.ask_gpt("C'est un passage incroyable ! "))
+    gpt.reinitialize_chat()
+    print(gpt.ask_gpt("Oui, quel est le role du renard?"))

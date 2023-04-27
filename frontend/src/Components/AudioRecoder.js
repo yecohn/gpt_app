@@ -85,17 +85,17 @@ const AudioRecorder = (props) => {
     return (
         <div className="text-blue-500  font-cursive flex justify-center hover:font-bold">
             {!permission ? (
-                <button className="bg-sky-500 text-white rounded p-2" onClick={getMicrophonePermission} type="button">
+                <button className="bg-cyan-950 text-white rounded p-2" onClick={getMicrophonePermission} type="button">
                     Start Chat
                 </button>
             ) : null}
             {permission && recordingStatus === "inactive" ? (
-                <button className="bg-sky-500 text-white rounded p-2" onClick={startRecording} type="button">
+                <button className="bg-cyan-950 text-white rounded p-2" onClick={startRecording} type="button">
                     Start Recording
                 </button>
             ) : null}
             {recordingStatus === "recording" ? (
-                <button className="bg-sky-500 text-white rounded p-2" onClick={stopRecording} type="button">
+                <button className="bg-cyan-950 text-white rounded p-2" onClick={stopRecording} type="button">
                     Stop Recording
                 </button>
             ) : null}

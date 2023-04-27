@@ -14,7 +14,9 @@ class BaseTTS:
 
 class GCPTTS(BaseTTS):
     audio_config = texttospeech.AudioConfig(
-        audio_encoding=texttospeech.AudioEncoding.MP3
+        audio_encoding=texttospeech.AudioEncoding.MP3,
+        # TODO: hardcoded need to change this
+        speaking_rate=1,
     )
 
     def __init__(self, language, speaker):
@@ -24,7 +26,6 @@ class GCPTTS(BaseTTS):
 
     @property
     def voice(self):
-
         return texttospeech.VoiceSelectionParams(
             language_code=self.language,
             name=self.speaker,
