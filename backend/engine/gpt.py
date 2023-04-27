@@ -1,12 +1,11 @@
 import json
-from backend.utils import timeit
 import time
-import os
 import openai
-import enum
 from typing import Dict, List
 from backend.app.users.user import User, Level
 from backend.db.mongo.mongo_connector import DBConnector
+from backend.utils.decorators import timeit
+from backend.db.sql.sql_connector import SQLConnector
 
 
 class GPTClient:
@@ -179,7 +178,8 @@ class GPTClient:
 
 
 if __name__ == "__main__":
-    user1 = User("Meir")
+    sql_connector = SQLConnector()
+    user1 = User("Meir", sql_connector)
     gpt = GPTClient(
         user=user1,
     )
