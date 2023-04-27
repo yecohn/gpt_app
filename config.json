@@ -1,5 +1,10 @@
 {
     "openai_api_key": "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", 
     "mongo_uri": "mongodb+srv://yehoshua:Yosh051210!@serverlessmongodb.pf1fk7z.mongodb.net/test",
-    "sql_uri": ""
+    "GOOGLE_APPLICATION_CREDENTIALS":"./sql_crendentials.json",
+    "INSTANCE_CONNECTION_NAME":"gpu-machine-383109:us-central1:postgresql",
+    "DB_PORT":"5432", 
+    "DB_NAME":"speakit", 
+    "DB_USER":"postgres", 
+    "DB_PASS":"Yosh051210!" 
 }

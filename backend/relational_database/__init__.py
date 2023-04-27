@@ -1,5 +1,8 @@
 # app/__init__.py
-from .database import engine
-from .tables import Base
- 
+import os
+from backend.relational_database.tables import Base
+from backend.rel_db_connector import engine
+
+
+
 Base.metadata.create_all(bind=engine)
