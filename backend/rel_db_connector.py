@@ -16,11 +16,18 @@ class RelDBConnector():
             # self.session.close()
         return wrapper
 
-    # Create new user
+    # Create new database element
     @commit_session
     def add_element(self, Table: Base, args: Iterable):
         self.session.add(Table(*args))
 
     @commit_session
-    def hello(self, name):
-        print(f'hello {name}')
+    def del_element(self, Table: Base, _id: int):
+        to_delete = self.session.query(Table).filter_by(id=_id).first()
+        self.session.delete(to_delete)
+
+    def access_full_table(self, Table: Base):
+        return self.session.query(Table).all()
+    
+    def access_element(self, Table: Base, _id: int):
+        return self.session.query(Table).filter_by(id=_id).first()
