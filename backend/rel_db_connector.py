@@ -1,5 +1,5 @@
-from relational_database.relational_tables import Base
-from relational_database.relational_database import Session
+from relational_database.tables import Base
+from relational_database.database import Session
 from typing import Any, Callable, Iterable
 
 class RelDBConnector():
@@ -23,11 +23,11 @@ class RelDBConnector():
 
     @commit_session
     def del_element(self, Table: Base, _id: int):
-        to_delete = self.session.query(Table).filter_by(id=_id).first()
+        to_delete = self.session.query(Table).filter_by(Table.id == _id).first()
         self.session.delete(to_delete)
 
     def access_full_table(self, Table: Base):
         return self.session.query(Table).all()
     
     def access_element(self, Table: Base, _id: int):
-        return self.session.query(Table).filter_by(id=_id).first()
+        return self.session.query(Table).filter_by(Table.id == _id).first()
