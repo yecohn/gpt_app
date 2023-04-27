@@ -1,5 +1,5 @@
 # app/__init__.py
-from .relational_database import engine
-from .relational_tables import Base
+from .database import engine
+from .tables import Base
  
 Base.metadata.create_all(bind=engine)

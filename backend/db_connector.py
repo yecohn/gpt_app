@@ -4,6 +4,23 @@ import json
 CONFIG_PATH = "./config.json"
 
 
+"""
+class DBConnector:
+
+    with open(CONFIG_PATH, 'r') as f:
+        URI = json.load(f).get('nosql_uri')
+        DATABASE_NAME = json.load(f).get('nosql_name')
+
+    DATABASE = None
+
+    @staticmethod
+    def initialize():
+        client = MongoClient(DBConnector.URI)
+        DBConnector.DATABASE = client[DBConnector.DATABASE_NAME]
+
+
+
+"""
 
 class DBConnector:
     def __init__(self, db_name):
