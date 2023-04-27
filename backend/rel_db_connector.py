@@ -1,6 +1,6 @@
-from relational_database.relational_tables import User, Chat
+from relational_database.relational_tables import Base
 from relational_database.relational_database import Session
-from typing import Any, Callable
+from typing import Any, Callable, Iterable
 
 class RelDBConnector():
     
@@ -18,11 +18,9 @@ class RelDBConnector():
 
     # Create new user
     @commit_session
-    def register_user(self, id: int, username: str):
-        self.session.add(User(id, username))
+    def add_element(self, Table: Base, args: Iterable):
+        self.session.add(Table(*args))
 
-
-    # Create new chat
     @commit_session
-    def open_new_chat(self, id: int):
-        self.session.add(Chat(id))
+    def hello(self, name):
+        print(f'hello {name}')
