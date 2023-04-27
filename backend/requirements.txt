@@ -13,5 +13,4 @@ google-cloud-texttospeech
 pymongo[srv]
 SQLAlchemy
 pg8000
-
- 
+moviepy
