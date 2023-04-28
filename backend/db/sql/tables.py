@@ -1,8 +1,10 @@
 from sqlalchemy import Column, Integer, String, Date
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from backend.db.sql.sql_connector import connect_tcp_socket
+from backend.db.sql.sql_connector import getengine
+from sqlalchemy.orm import declarative_base
 
+#BEFORE RUNNING THIS SCRIPT ADD ENV VARIABLE: 
+# export GOOGLE_APPLICATION_CREDENTIALS="<path_to_project>/config/sql_credentials.json"
 Base = declarative_base()
 
 
@@ -30,5 +32,5 @@ class Chat(Base):
 
 
 if __name__ == "__main__":
-    engine = connect_tcp_socket()
+    engine = getengine()
     Base.metadata.create_all(bind=engine)

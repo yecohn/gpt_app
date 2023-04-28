@@ -11,6 +11,6 @@ scipy
 fastapi[all]
 google-cloud-texttospeech
 pymongo[srv]
-SQLAlchemy
-pg8000
+SQLAlchemy==2.0.7
 moviepy
+cloud-sql-python-connector

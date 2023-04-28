@@ -1,40 +1,48 @@
-from backend.db.sql.tables import Base
 from typing import Any, Callable, Iterable
 import sqlalchemy
 from sqlalchemy.orm import sessionmaker
-import os
-from config.config import SQL_CONF
+from sqlalchemy.orm import declarative_base
+from google.cloud.sql.connector import Connector
+import json
+from google.auth import load_credentials_from_file
 
 
-def connect_tcp_socket() -> sqlalchemy.engine.base.Engine:
-    """Initializes a TCP connection pool for a Cloud SQL instance of Postgres."""
-    db_host = SQL_CONF["INSTANCE_CONNECTION_NAME"]
-    db_user = SQL_CONF["DB_USER"]
-    db_pass = SQL_CONF["DB_PASS"]
-    db_name = SQL_CONF["DB_NAME"]
-    db_port = SQL_CONF["DB_PORT"]
+
+Base = declarative_base()
+
+connector = Connector()
+
+
+# function to return the database connection object
+def getengine():
+    def getconn():
+        with open("./config/config.json", "r") as f:
+            SQL_CONF = json.load(f)
+        DB_HOST = SQL_CONF["INSTANCE_CONNECTION_NAME"]
+        DB_USER = SQL_CONF["DB_USER"]
+        DB_PASS = SQL_CONF["DB_PASS"]
+        DB_NAME = SQL_CONF["DB_NAME"]
+        # DB_PORT = SQL_CONF["DB_PORT"]
+        conn = connector.connect(
+            DB_HOST, "pg8000", user=DB_USER, password=DB_PASS, db=DB_NAME
+        )
+        return conn
 
     engine = sqlalchemy.create_engine(
-        sqlalchemy.engine.url.URL.create(
-            drivername="postgresql+pg8000",
-            username=db_user,
-            password=db_pass,
-            host=db_host,
-            port=db_port,
-            database=db_name,
-        ),
+        "postgresql+pg8000://",
+        creator=getconn,
     )
     return engine
 
 
 class SQLConnector:
     def __init__(self) -> None:
-        engine = connect_tcp_socket()
+        engine = getengine()
         self.session = sessionmaker(bind=engine)()
 
-    def commit_session(self, func: Callable) -> Callable:
-        def wrapper(*args: Any, **kwargs: Any) -> Any:
-            func(*args, **kwargs)
+    def commit_session(func: Callable) -> Callable:
+        def wrapper(self, *args: Any, **kwargs: Any) -> Any:
+            func(self, *args, **kwargs)
             self.session.commit()
 
         return wrapper
@@ -53,5 +61,3 @@ class SQLConnector:
 
     def find(self, Table: Base, query: str) -> Base:
         pass
-
-
