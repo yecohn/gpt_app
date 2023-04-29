@@ -8,12 +8,12 @@ DB_PATH = "./backend/db.json"
 class User:
     def __init__(self, username: str, db_connector: DBConnector) -> None:
         self.username = username
-        self.retrieve_personal_info()
         self.db_connector = db_connector
+        self.retrieve_personal_info()
         # in python class are camelCase: MyClass and functions are snake_case: my_function
 
     def retrieve_personal_info(self):
-        user = self.db_connector.find({"username": self.username}, "users")
+        user = self.db_connector.find({"name": self.username}, "users")
         [setattr(self, k, v) for k, v in user.items()]
 
     def update_personal_info(self, attr, val):

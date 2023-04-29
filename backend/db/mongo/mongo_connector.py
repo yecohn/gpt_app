@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import json
 
-CONFIG_PATH = "./config.json"
+CONFIG_PATH = "/Users/yosh/Desktop/projects/gpt/config/config.json"
 
 
 """
@@ -21,6 +21,7 @@ class DBConnector:
 
 
 """
+
 
 class DBConnector:
     def __init__(self, db_name):
@@ -48,8 +49,6 @@ class DBConnector:
 
     def find(self, query, collection_name):
         return self.db[collection_name].find_one(query)
-
-
 
 
 

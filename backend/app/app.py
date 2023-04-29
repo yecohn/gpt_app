@@ -32,9 +32,10 @@ class AudioUrl(BaseModel):
     audiourl: str
 
 
-meir = User("Meir")
-gpt = GPTClient(user=meir)
-gpt.initialize_chat()
+meir = User("Meir Lejzerowicz", db_client)
+gpt = GPTClient(user=meir, db_connector=db_client)
+
+gpt.reinitialize_chat()
 tts = GCPTTS(language="fr-FR", speaker="fr-FR-Wavenet-A")
 client = speech.SpeechClient()
 freq = 44100

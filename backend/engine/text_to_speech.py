@@ -1,7 +1,7 @@
 import os
 import time
 from gtts import gTTS
-from backend.utils import timeit
+from backend.utils.decorators import timeit
 from google.cloud import texttospeech
 from abc import ABC, abstractclassmethod
 

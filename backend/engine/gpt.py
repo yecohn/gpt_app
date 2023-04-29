@@ -22,7 +22,8 @@ class GPTClient:
         return self._metadata()
 
     def _metadata(self):
-        _metadata = self.db_connector.find({"name": "GPT_metadata"}, "metadata")
+        _metadata = self.db_connector.find({}, "metadata")['GPT_metadata']
+        print(_metadata)
         return _metadata
 
     @property
@@ -35,11 +36,11 @@ class GPTClient:
         Re initialize the chat file by deleting it if there is already a
         conversation inside or by creating it if it does not exist
         """
-        if self.user.previous_chat:
-            self.user.previous_chat = None
+        if self.user.previous_chats:
+            self.user.previous_chats = None
             self.db_connector.update(
                 {"username": self.user.username},
-                {"previous_chat": self.user.previous_chat},
+                {"previous_chat": self.user.previous_chats},
                 "users",
             )
         initial_prompt = self.initial_prompt
@@ -77,7 +78,7 @@ class GPTClient:
         print(template_text)
         return template_text
 
-    def _api_key(self, config_file="./config.json"):
+    def _api_key(self, config_file="./config/config.json"):
         with open(config_file, "r") as config:
             CONFIG = json.load(config)
         return CONFIG["openai_api_key"]
