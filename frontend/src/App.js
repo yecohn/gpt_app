@@ -6,19 +6,10 @@ import GuidedConversation from "./Components/GuidedConversation";
 import FreeConversation from "./Components/FreeConversation";
 import Login from "./Components/Login";
 import Register from "./Components/Register";
+// Create serviceFactory
 
 const App = () => {
-  var ws = null;
 
-  // TODO:
-  // Use webSocket connection and rerender at any change of the connection --> should be
-  // implemented very soon
-
-  // useEffect(() => {
-  //   ws = new WebSocket("ws://localhost:8000/ws")
-  //   ws.onopen = () => ws.send("Hello from client")
-  //   ws.onmessage = (e) => { console.log(e) }
-  // }, [ws])
 
   return (
     <>

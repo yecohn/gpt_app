@@ -7,7 +7,6 @@ import json
 from google.auth import load_credentials_from_file
 
 
-
 Base = declarative_base()
 
 connector = Connector()
@@ -59,5 +58,13 @@ class SQLConnector:
     def remove(self, Table: Base, args: Iterable):
         pass
 
-    def find(self, Table: Base, query: str) -> Base:
-        pass
+    def query(self, Table: Base, query: bool) -> Base:
+        return self.session.query(Table).filter(query).first()
+
+
+def access_sql():
+    try:
+        db = SQLConnector()
+        yield db
+    finally:
+        db.session.close()

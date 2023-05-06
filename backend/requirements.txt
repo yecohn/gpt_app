@@ -14,3 +14,7 @@ pymongo[srv]
 SQLAlchemy==2.0.7
 moviepy
 cloud-sql-python-connector
+passlib
+bcrypt
+python-jose
+python-multipart

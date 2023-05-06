@@ -4,25 +4,6 @@ import json
 CONFIG_PATH = "/Users/yosh/Desktop/projects/gpt/config/config.json"
 
 
-"""
-class DBConnector:
-
-    with open(CONFIG_PATH, 'r') as f:
-        URI = json.load(f).get('nosql_uri')
-        DATABASE_NAME = json.load(f).get('nosql_name')
-
-    DATABASE = None
-
-    @staticmethod
-    def initialize():
-        client = MongoClient(DBConnector.URI)
-        DBConnector.DATABASE = client[DBConnector.DATABASE_NAME]
-
-
-
-"""
-
-
 class DBConnector:
     def __init__(self, db_name):
         self.client = MongoClient(self.secret)
@@ -50,6 +31,13 @@ class DBConnector:
     def find(self, query, collection_name):
         return self.db[collection_name].find_one(query)
 
+
+def access_mongo():
+    try:
+        mongo_client = DBConnector("chat")
+        yield mongo_client
+    finally:
+        mongo_client.db.close()
 
 
 if __name__ == "__main__":

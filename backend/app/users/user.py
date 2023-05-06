@@ -5,7 +5,7 @@ from backend.db.mongo.mongo_connector import DBConnector
 DB_PATH = "./backend/db.json"
 
 
-class User:
+class UserInfo:
     def __init__(self, username: str, db_connector: DBConnector) -> None:
         self.username = username
         self.db_connector = db_connector

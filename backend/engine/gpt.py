@@ -2,7 +2,7 @@ import json
 import time
 import openai
 from typing import Dict, List
-from backend.app.users.user import User, Level
+from backend.app.users.user import UserInfo, Level
 from backend.db.mongo.mongo_connector import DBConnector
 from backend.utils.decorators import timeit
 from backend.db.sql.sql_connector import SQLConnector
@@ -11,7 +11,7 @@ from backend.db.sql.sql_connector import SQLConnector
 class GPTClient:
     def __init__(
         self,
-        user: User,
+        user: UserInfo,
         db_connector: DBConnector,
     ):
         self.user = user
