@@ -6,9 +6,9 @@ import io
 from typing import Type
 import numpy as np
 
-os.environ[
-    "GOOGLE_APPLICATION_CREDENTIALS"
-] = "/Users/yosh/Desktop/gpu-machine-383109-eb6f06eb9e8a.json"
+# os.environ[
+#     "GOOGLE_APPLICATION_CREDENTIALS"
+# ] = "/Users/yosh/Desktop/gpu-machine-383109-eb6f06eb9e8a.json"
 
 
 class STT:
