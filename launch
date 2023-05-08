@@ -1,8 +1,0 @@
-#!/bin/bash
-
-export PYTHONPATH=${PWD}
-cd backend
-uvicorn app:app --reload &
-cd ../frontend 
-npm start
-

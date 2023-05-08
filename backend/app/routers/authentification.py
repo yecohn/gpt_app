@@ -35,7 +35,7 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
     access_token = create_access_token(
         data={"sub": user.username},
     )
-
+    
     return {"access_token": access_token, "token_type": "bearer", "user_id": user.id}
 
 
