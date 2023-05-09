@@ -8,6 +8,7 @@ class DBConnector:
     def __init__(self, db_name):
         self.client = MongoClient(self.secret)
         self.db = self.client[db_name]
+        print("initialized db connector")
 
     @property
     def secret(cls):
@@ -29,20 +30,22 @@ class DBConnector:
         self.db[collection_name].update_one(data, setter)
 
     def find(self, query, collection_name):
-        return self.db[collection_name].find_one(query)
+        result = self.db[f"{collection_name}"].find_one(query)
+        return result
 
 
 def access_mongo():
     try:
-        mongo_client = DBConnector("chat")
+        mongo_client = DBConnector("speakit")
         yield mongo_client
     finally:
-        mongo_client.db.close()
+        mongo_client.client.close()
 
 
 if __name__ == "__main__":
-    db = DBConnector("speakit", "test")
-    db.push({"test": "test"})
-    print(db.find({"test": "test"}))
+    db = DBConnector("speakit")
+    # db.push({"test": "test"})
+    db.find(collection_name="chats", query={"user_id": 1})
+    # print(db.find({"test": "test"}))
     db.delete({"test": "test"})
     db.update({"test": "test"}, {"test": "test2"})

@@ -22,8 +22,8 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
         : redirect user on chat page with previous chat
     """
     username, password = info.username, info.password
-    print(username, password)
     user = db.query(User, query=User.username == username)
+    print(user.id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
@@ -35,8 +35,17 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
     access_token = create_access_token(
         data={"sub": user.username},
     )
+<<<<<<< HEAD
     
     return {"access_token": access_token, "token_type": "bearer", "user_id": user.id}
+=======
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user_id": str(user.id),
+    }
+>>>>>>> 67e19a01f49eaa31c3ee64ccbd75cbcf5ecf5ce9
 
 
 @router.post("/register", status_code=200)
@@ -57,6 +66,7 @@ async def signup(inf: Userinf, db=Depends(access_sql)):
             email=inf.email,
             password=Hash.bcrypt(inf.password),
             username=inf.username,
+            level=inf.level,
         )
     )
     return {"message": "user created", "success": True}
