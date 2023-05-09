@@ -32,6 +32,10 @@ class DBConnector:
     def find(self, query, collection_name):
         result = self.db[f"{collection_name}"].find_one(query)
         return result
+    
+    def find_all_but(self, collection_name, projection):
+        result = self.db[f"{collection_name}"].find({}, projection)
+        return result
 
 
 def access_mongo():
@@ -45,7 +49,9 @@ def access_mongo():
 if __name__ == "__main__":
     db = DBConnector("speakit")
     # db.push({"test": "test"})
-    db.find(collection_name="chats", query={"user_id": 1})
+    # db.find(collection_name="chats", query={"user_id": 1})
+    # print(db.find(collection_name="topics", query={"topic_id": 1}))
+    # print(db.find_all_but(collection_name="topics", projection = {"transcript": 0}))
     # print(db.find({"test": "test"}))
-    db.delete({"test": "test"})
-    db.update({"test": "test"}, {"test": "test2"})
+    # db.delete({"test": "test"})
+    # db.update({"test": "test"}, {"test": "test2"})

@@ -126,6 +126,31 @@ class GPTClient:
         print(messages)
         return messages
 
+    def create_lesson(self, lesson_prompt) -> str:
+        messages = self.retrieve_chat().append(json.loads((lesson_prompt).strip()))
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            n=1,
+            **self.level
+            # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
+        )        
+        answer = response["choices"][0]["message"]["content"]
+        return answer
+
+    def ask_gpt_about_topic(self, transcript, topic_prompt) -> None:
+        messages = self.retrieve_chat().append(json.loads((topic_prompt + transcript).strip()))
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            n=1,
+            **self.level
+            # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
+        )        
+        answer = response["choices"][0]["message"]["content"]
+        self.store_chat("system", answer)
+        self.answer = answer
+
     @timeit
     def ask_gpt(self, question) -> str:
         """ask gpt a question and get an answer

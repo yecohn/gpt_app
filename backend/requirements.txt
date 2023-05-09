@@ -19,3 +19,4 @@ bcrypt
 python-jose
 python-multipart
 pg8000
+pymongo
