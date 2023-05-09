@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+import datetime
 
 
 class Login(BaseModel):
@@ -27,4 +28,16 @@ class AudioUrl(BaseModel):
 
 
 class TokenData(BaseModel):
-    username: str 
+    username: str
+
+
+class Usr(BaseModel):
+    id: str
+    username: str
+class MessageChat(BaseModel):
+
+    user: Usr
+    message: str
+    createAt: datetime.datetime
+
+

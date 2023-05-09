@@ -13,8 +13,9 @@
             "justMyCode": true,
             "cwd": "${workspaceFolder}",
             "env": {
-                "PYTHONPATH": "${cwd}"
-            }
+                "PYTHONPATH": "${cwd}",
+                "GOOGLE_APPLICATION_CREDENTIALS":"/Users/yosh/Desktop/projects/gpt/config/sql_credentials.json",
+             }
         }
     ]
 }
