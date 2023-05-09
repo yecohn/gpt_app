@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import json
 
-CONFIG_PATH = "/Users/yosh/Desktop/projects/gpt/config/config.json"
+CONFIG_PATH = "./config/config.json"
 
 
 class DBConnector:
