@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Security
 from fastapi import UploadFile, File, Depends
 from backend.db.sql.sql_connector import access_sql
 from backend.db.sql.tables import User
-from backend.db.mongo.mongo_connector import access_mongo
+from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.engine.gpt import GPTClient
 from backend.engine.speech_to_text import STT
 from backend.engine.text_to_speech import GCPTTS
@@ -43,7 +43,7 @@ import os
 @router.get("/chat/{id}", status_code=200)
 async def load_chat(
     id: int,
-    mongo_db=Depends(access_mongo),
+    mongo_db: MongoConnector = Depends(access_mongo),
 ):
     """load previous chat from database
 
@@ -59,10 +59,10 @@ async def load_chat(
     return res
 
 
-@router.post("/chat/{id}", status_code=200)
+@router.post("/chat/{id}/post", status_code=200)
 async def answer(
     messagechat: MessageChat,
-    mongo_db=Depends(access_mongo),
+    mongo_db: MongoConnector = Depends(access_mongo),
     sql_db=Depends(access_sql),
 ):
     """answer to a message
@@ -74,31 +74,29 @@ async def answer(
     Returns:
         _type_: _description_
     """
-    usrname = sql_db.query(User.username).filter(User.id == messagechat.id).first()
-    usr = UserInfo(
-        username=usrname,
-    )
-
+    usr = UserInfo(userid=messagechat.user.id, db_connector=sql_db)
     gpt = GPTClient(user=usr, db_connector=mongo_db)
     openai.api_key = gpt.api_key
     question = messagechat.message
     answer = gpt.ask_gpt(question)
     question_json = {
-        "user_name": usrname,
-        "message": question,
-        "createdAt": MessageChat.createAt,
+        "user": {"id": messagechat.user.id, "name": usr.username},
+        "text": question,
+        "createdAt": messagechat.createdAt,
     }
+
     answer_json = {
-        "user_name": "ai",
-        "message": answer,
-        "createdAt": datetime.now(),
+        "user": {"id": messagechat.user.id, "name": "ai"},
+        "text": answer,
+        "createdAt": messagechat.createdAt,
     }
-    mongo_db.db["chats"].update(
-        {"user_id": messagechat.id}, {"$push": {"messages": question_json}}
+
+    mongo_db.push(
+        "chats",
+        {"user_id": messagechat.user.id},
+        {"$push": {"messages": {"$each": [question_json, answer_json]}}},
     )
-    mongo_db.db["chats"].update(
-        {"user_id": messagechat.id}, {"$push": {"messages": answer_json}}
-    )
+
     # _ = tts.generate_speech(answer)
     return {"ok": True}
 

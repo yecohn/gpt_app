@@ -32,12 +32,11 @@ class TokenData(BaseModel):
 
 
 class Usr(BaseModel):
-    id: str
+    id: int
     username: str
-class MessageChat(BaseModel):
 
+
+class MessageChat(BaseModel):
     user: Usr
     message: str
-    createAt: datetime.datetime
-
-
+    createdAt: datetime.datetime

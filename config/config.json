@@ -1,5 +1,5 @@
 {
-    "openai_api_key": "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", 
+    "openai_api_key": "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", 
     "mongo_uri": "mongodb+srv://yehoshua:Yosh051210!@serverlessmongodb.pf1fk7z.mongodb.net/test",
     "GOOGLE_APPLICATION_CREDENTIALS":"/Users/yosh/Desktop/projects/gpt/config/sql_credentials.json",
     "INSTANCE_CONNECTION_NAME":"gpu-machine-383109:us-central1:postgresql",

@@ -2,8 +2,8 @@ import json
 import time
 import openai
 from typing import Dict, List
-from backend.app.users.user import UserInfo, Level
-from backend.db.mongo.mongo_connector import DBConnector
+from backend.app.users.user import UserInfo
+from backend.db.mongo.mongo_connector import MongoConnector
 from backend.utils.decorators import timeit
 from backend.db.sql.sql_connector import SQLConnector
 
@@ -12,7 +12,7 @@ class GPTClient:
     def __init__(
         self,
         user: UserInfo,
-        db_connector: DBConnector,
+        db_connector: MongoConnector,
     ):
         self.user = user
         self.db_connector = db_connector
@@ -22,14 +22,14 @@ class GPTClient:
         return self._metadata()
 
     def _metadata(self):
-        _metadata = self.db_connector.find({}, "metadata")['GPT_metadata']
+        _metadata = self.db_connector.find({}, "metadata")["GPT_metadata"]
         print(_metadata)
         return _metadata
 
     @property
     def level(self):
         user_level = self.user.level
-        return Level.__members__[user_level].value["gpt"]
+        return self.db_connector.find({"level": user_level}, "levels")["gpt"]
 
     def reinitialize_chat(self) -> None:
         """
@@ -87,6 +87,11 @@ class GPTClient:
     def api_key(self):
         return self._api_key()
 
+    @property
+    def initial_prompt(self):
+        with open("./data/starting_beginner_prompt_template.txt", "r") as file:
+            return file.read()
+
     def formulate_message(self, role: str, content: str) -> Dict:
         """
         Args:
@@ -117,14 +122,20 @@ class GPTClient:
         Reads the chat json file and returns a json message  that is taken into argument by the model
         Returns: List[Dict]: List of messages to be processed by gpt api
         """
-        with open(self.metadata.get("chat_file"), "r") as f:
-            data = f.readlines()
-        json_data = [json.loads(line.strip()) for line in data]
-        messages = []
-        for obj in json_data:
-            messages.append(obj)
-        print(messages)
-        return messages
+
+        def replace_role(role: str) -> str:
+            if role == "ai":
+                return "system"
+            elif isinstance(role, str):
+                return "user"
+
+        chat = self.db_connector.find({"user_id": self.user.id}, "chats")
+        messages = chat["messages"]
+        messages_gpt = [
+            {"role": replace_role(m["user"]["name"]), "content": m["text"]}
+            for m in messages
+        ]
+        return messages_gpt
 
     def create_lesson(self, lesson_prompt) -> str:
         messages = self.retrieve_chat().append(json.loads((lesson_prompt).strip()))
@@ -160,28 +171,20 @@ class GPTClient:
         Returns:
             str: answer to the question
         """
-        self.question = question
-        self.store_chat("user", question)
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=self.retrieve_chat(),
-            n=1,
-            **self.level
-            # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
-        )
-        collected_messages = []
-        # if streaming
-        # for chunk in response:
-        #     chunk_message = chunk["choices"][0]["delta"]
-        #     collected_messages.append(chunk_message)
-        # answer = "".join([m.get("content", "") for m in collected_messages])
+        question_gpt = {"role": "user", "content": question}
+        chat = self.retrieve_chat()
+        inital_prompt = {"role": "user", "content": self.initial_prompt}
+        chat.insert(0, inital_prompt)
+        chat.append(question_gpt)
 
-        # if not streamng
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo", messages=chat, n=1, **self.level
+        )
         answer = response["choices"][0]["message"]["content"]
         print(answer)
 
         # Build the answer in a string format considering only the content of the message
-        self.store_chat("system", answer)
+        # self.store_chat("system", answer)
         self.answer = answer
         return answer
 

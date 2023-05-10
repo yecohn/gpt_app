@@ -4,7 +4,7 @@ import json
 CONFIG_PATH = "./config/config.json"
 
 
-class DBConnector:
+class MongoConnector:
     def __init__(self, db_name):
         self.client = MongoClient(self.secret)
         self.db = self.client[db_name]
@@ -37,17 +37,24 @@ class DBConnector:
         result = self.db[f"{collection_name}"].find({}, projection)
         return result
 
+    def push(self, collection_name, query, setter):
+        self.db[collection_name].update_one(query, setter)
+
+    def find_all(self, query, collection_name):
+        result = self.db[f"{collection_name}"].find(query)
+        return result
+
 
 def access_mongo():
     try:
-        mongo_client = DBConnector("speakit")
+        mongo_client = MongoConnector("speakit")
         yield mongo_client
     finally:
         mongo_client.client.close()
 
 
 if __name__ == "__main__":
-    db = DBConnector("speakit")
+    db = MongoConnector("speakit")
     # db.push({"test": "test"})
     # db.find(collection_name="chats", query={"user_id": 1})
     # print(db.find(collection_name="topics", query={"topic_id": 1}))

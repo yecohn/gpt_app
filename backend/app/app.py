@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import uvicorn
 from starlette.middleware.cors import CORSMiddleware
 import moviepy.editor as moviepy
 from .routers import user, chat, authentification, topic, lesson
@@ -59,3 +60,6 @@ async def root():
 #         # await manager.send_personal_message(f"You wrote: {data}", websocket)
 #         message = {"time": current_time, "clientId": client_id, "message": data}
 #         await manager.broadcast(json.dumps(message))
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="localhost", port=8000)

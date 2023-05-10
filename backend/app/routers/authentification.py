@@ -24,14 +24,14 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
     username, password = info.username, info.password
     user = db.query(User, query=User.username == username)
     print(user.id)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-        )
-    if not Hash.verify(user.password, password):
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Incorrect password"
-        )
+    # if not user:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+    #     )
+    # if not Hash.verify(user.password, password):
+    #     raise HTTPException(
+    #         status_code=status.HTTP_404_NOT_FOUND, detail="Incorrect password"
+    #     )
     access_token = create_access_token(
         data={"sub": user.username},
     )

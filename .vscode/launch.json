@@ -5,17 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Python: Module",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "justMyCode": true,
-            "cwd": "${workspaceFolder}",
-            "env": {
-                "PYTHONPATH": "${cwd}",
-                "GOOGLE_APPLICATION_CREDENTIALS":"/Users/yosh/Desktop/projects/gpt/config/sql_credentials.json",
-             }
+            "module": "backend.app.app",
+            "env":{
+                "GOOGLE_APPLICATION_CREDENTIALS":"${cwd}/config/sql_credentials.json"
+            },
+            "justMyCode": true
         }
     ]
 }
