@@ -11,7 +11,8 @@ import openai
 from google.cloud import speech
 from ..oauth2 import get_current_user
 from backend.app.models import MessageChat
-from datetime import datetime 
+from datetime import datetime
+
 router = APIRouter()
 
 
@@ -27,20 +28,26 @@ async def topic_list(
     Returns:
         _type_: _description_
     """
-    topics = mongo_db.find_all_but(collection_name="topics", projection = {"transcript": 0})    
+    topics = mongo_db.find_all_but(
+        collection_name="topics", projection={"transcript": 0}
+    )
     res = []
     for topic in topics:
-        res.append({
-            "topic_id": topic["topic_id"], 
-            "name": topic["name"], 
-            "description": topic["description"],
-            "link": topic["link"],})
+        res.append(
+            {
+                "topic_id": topic["topic_id"],
+                "name": topic["name"],
+                "description": topic["description"],
+                "link": topic["link"],
+            }
+        )
     return res
 
 
 @router.get("/topics/{topic_id}", status_code=200)
 async def triggerTopic(
     topic_id: int,
+    user_id: int,
     mongo_db=Depends(access_mongo),
 ):
     """_summary_
@@ -53,6 +60,26 @@ async def triggerTopic(
         _type_: _description_
     """
     gpt = GPTClient()
-    transcript = mongo_db.find(collection_name="topics", query={"topic_id": topic_id}).get("transcript")
-    topic_prompt = mongo_db.find(collection_name="metadata").gett('GPT_metada').get('topic_prompt')
-    gpt.ask_gpt_about_topic(transcript, topic_prompt)
+    transcript = mongo_db.find(
+        collection_name="topics", query={"topic_id": topic_id}
+    ).get("transcript")
+    topic_prompt = (
+        mongo_db.find(collection_name="metadata")
+        .get("GPT_metadata")
+        .get("topic_prompt")
+    )
+    answer = gpt.ask_gpt_about_topic(transcript, topic_prompt)
+    answer_json = {
+        "user": {"id": 0, "name": "ai"},
+        "text": answer,
+        "createdAt": datetime.now(),
+    }
+
+    mongo_db.push(
+        "chats",
+        {"user_id": user_id},
+        {"$push": {"messages": answer_json}},
+    )
+
+    # _ = tts.generate_speech(answer)
+    return {"ok": True}

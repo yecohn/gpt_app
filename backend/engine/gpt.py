@@ -145,22 +145,24 @@ class GPTClient:
             n=1,
             **self.level
             # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
-        )        
+        )
         answer = response["choices"][0]["message"]["content"]
         return answer
 
-    def ask_gpt_about_topic(self, transcript, topic_prompt) -> None:
-        messages = self.retrieve_chat().append(json.loads((topic_prompt + transcript).strip()))
+    def ask_gpt_about_topic(self, transcript, topic_prompt) -> dict:
+        messages = self.retrieve_chat()
+        question = topic_prompt + "\n" + transcript
+        question = self.formulate_message(role="user", content=question)
+        messages += [question]
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
             n=1,
             **self.level
             # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
-        )        
+        )
         answer = response["choices"][0]["message"]["content"]
-        self.store_chat("system", answer)
-        self.answer = answer
+        return answer
 
     @timeit
     def ask_gpt(self, question) -> str:
