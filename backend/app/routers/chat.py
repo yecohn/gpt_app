@@ -77,16 +77,18 @@ async def answer(
     usr = UserInfo(userid=messagechat.user.id, db_connector=sql_db)
     gpt = GPTClient(user=usr, db_connector=mongo_db)
     openai.api_key = gpt.api_key
-    question = messagechat.message
+    question = messagechat.text
     answer = gpt.ask_gpt(question)
     question_json = {
         "user": {"id": messagechat.user.id, "name": usr.username},
+        'origin': 'user',
         "text": question,
         "createdAt": messagechat.createdAt,
     }
 
     answer_json = {
         "user": {"id": messagechat.user.id, "name": "ai"},
+        'origin': 'system',
         "text": answer,
         "createdAt": messagechat.createdAt,
     }

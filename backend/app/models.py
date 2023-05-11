@@ -38,5 +38,5 @@ class Usr(BaseModel):
 
 class MessageChat(BaseModel):
     user: Usr
-    message: str
+    text: str
     createdAt: datetime.datetime
