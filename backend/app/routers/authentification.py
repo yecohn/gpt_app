@@ -46,16 +46,16 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
 
 @router.post("/register", status_code=200)
 async def signup(inf: Userinf, db=Depends(access_sql)):
-    """create user in database
+    """_summary_
 
     Args:
-        username (str): _description_
-        password (str): _description_
+        inf (Userinf): _description_
+        db (_type_, optional): _description_. Defaults to Depends(access_sql).
 
     Returns:
-        _type_: redirect user on chat page with previous chat
+        _type_: _description_
     """
-    print(inf.username, inf.password, inf.email)
+    print(inf.username, inf.password, inf.email, inf.level, inf.native, inf.target)
 
     db.add(
         User(
@@ -63,6 +63,8 @@ async def signup(inf: Userinf, db=Depends(access_sql)):
             password=Hash.bcrypt(inf.password),
             username=inf.username,
             level=inf.level,
+            native=inf.native,
+            target=inf.target,
         )
     )
     return {"message": "user created", "success": True}

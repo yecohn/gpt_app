@@ -15,7 +15,8 @@ class User(Base):
     username = Column("username", String(50))
     email = Column("email", String(50))
     level = Column("level", String(50))
-    # native = Column("native language", String(50))
+    native = Column("native language", String(50))
+    target = Column("target language", String(50))
     password = Column("password", String(200))
 
 
@@ -23,7 +24,6 @@ class Chat(Base):
     __tablename__ = "chats"
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer)
-    language = Column("language", String(50))
     start_date = Column("start_date", Date)
     last_date = Column("last_date", Date)
     # user = relationship("User", back_populates="chats")

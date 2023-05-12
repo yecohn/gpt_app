@@ -12,6 +12,8 @@ class Userinf(BaseModel):
     email: str
     password: str
     level: str
+    native: str
+    target: str
 
 
 class Logininf(BaseModel):
