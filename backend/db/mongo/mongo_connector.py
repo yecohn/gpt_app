@@ -19,7 +19,7 @@ class MongoConnector:
             secret = json.load(f).get("mongo_uri")
         return secret
 
-    def push(self, data, collection_name):
+    def insert_one(self, data, collection_name):
         self.db[collection_name].insert_one(data)
 
     def delete(self, data, collection_name):

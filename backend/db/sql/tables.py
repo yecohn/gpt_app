@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date
-from sqlalchemy.orm import relationship
 from backend.db.sql.sql_connector import getengine
 from sqlalchemy.orm import declarative_base
-
 # BEFORE RUNNING THIS SCRIPT ADD ENV VARIABLE:
 # export GOOGLE_APPLICATION_CREDENTIALS="<path_to_project>/config/sql_credentials.json"
 Base = declarative_base()
@@ -15,8 +13,8 @@ class User(Base):
     username = Column("username", String(50))
     email = Column("email", String(50))
     level = Column("level", String(50))
-    native = Column("native language", String(50))
-    target = Column("target language", String(50))
+    # native = Column("native", String(50))
+    # target = Column("target", String(50))
     password = Column("password", String(200))
 
 
@@ -31,4 +29,9 @@ class Chat(Base):
 
 if __name__ == "__main__":
     engine = getengine()
+    # connection = engine.connect()
+    # query = f'ALTER TABLE "users" ADD COLUMN "native" VARCHAR(50);'
+    # connection.execute(query)
+    # query = f'ALTER TABLE "users" ADD COLUMN "target" VARCHAR(50);'
+    # connection.execute(query)
     Base.metadata.create_all(bind=engine)

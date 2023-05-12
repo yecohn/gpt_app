@@ -1,7 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Security
-from fastapi import UploadFile, File, Depends
+from fastapi import APIRouter, Depends
+from fastapi import Depends
 from backend.db.sql.sql_connector import access_sql
-from backend.db.sql.tables import User
 from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.engine.gpt import GPTClient
 from backend.engine.speech_to_text import STT
@@ -9,7 +8,6 @@ from backend.engine.text_to_speech import GCPTTS
 from backend.app.users.user import UserInfo
 import openai
 from google.cloud import speech
-from ..oauth2 import get_current_user
 from backend.app.models import MessageChat
 from datetime import datetime
 
@@ -36,7 +34,6 @@ stt = STT(
 )
 
 router = APIRouter()
-import os
 
 
 ####### Implement this chat with websocket architecture ##############################
@@ -55,7 +52,40 @@ async def load_chat(
     """
     # chat = mongo_db.find(collection_name="chat", query={"user_id": id})
     chat = mongo_db.db["chats"].find_one({"user_id": id})
+    print(chat)
     res = {"messages": chat["messages"], "user_id": id}
+    return res
+
+@router.get("/chat/{id}/reset", status_code=200)
+async def reset_chat(
+    id: int,
+    mongo_db: MongoConnector = Depends(access_mongo),
+):
+    """load previous chat from database
+
+    Args:
+        id (int): id of user
+    """
+    gpt = GPTClient()
+    openai.api_key = gpt.api_key
+    mongo_db.db["chats"].delete_one({"user_id": id})
+    gpt.start_new_chat()
+
+    answer_json = {
+    "user": {"id": id, "name": "ai"},
+    'origin': 'system',
+    "text": gpt.answer,
+    "createdAt": datetime.now(),
+    }
+    # TO COMPLETE
+    new_chat = {
+        "user_id": id,
+        "chat_id": 1,
+        "messages": [answer_json],
+        "createdAt": datetime.now(),
+    }
+    mongo_db.insert_one(new_chat)
+    res = {'gpt_first_message': gpt.answer}
     return res
 
 

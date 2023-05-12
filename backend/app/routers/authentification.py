@@ -55,7 +55,7 @@ async def signup(inf: Userinf, db=Depends(access_sql)):
     Returns:
         _type_: _description_
     """
-    print(inf.username, inf.password, inf.email, inf.level, inf.native, inf.target)
+    print(inf.username, inf.password, inf.email, inf.level)
 
     db.add(
         User(
@@ -63,8 +63,8 @@ async def signup(inf: Userinf, db=Depends(access_sql)):
             password=Hash.bcrypt(inf.password),
             username=inf.username,
             level=inf.level,
-            native=inf.native,
-            target=inf.target,
+            # native=inf.native,
+            # target=inf.target,
         )
     )
     return {"message": "user created", "success": True}
