@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Bonjour! Comment puis-je t'aider aujourd'hui?
+=======
+Bonjour! Je vais bien, merci. Comment ça va aujourd'hui?
+>>>>>>> e7a6869 (work on socket)
