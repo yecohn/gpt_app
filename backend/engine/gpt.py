@@ -1,5 +1,4 @@
 import json
-import time
 import openai
 from typing import Dict, List
 from backend.app.users.user import UserInfo
@@ -28,23 +27,10 @@ class GPTClient:
 
     @property
     def level(self):
-        user_level = self.user.level
-        return self.db_connector.find({"level": user_level}, "levels")["gpt"]
-
-    # @property
-    # def initial_prompt(self):
-    #     with open(self.metadata.get("initial_prompt_template"), "r") as f_template:
-    #         attributes = ("level", "username")
-    #         user_words = {attr: self.user.__getattribute__(attr) for attr in attributes}
-    #         template_text = f_template.read().format(**user_words)
-    #     print(template_text)
-    #     return template_text
-
-    # @property
-    # def initial_prompt(self):
-    #     with open("./data/initial_prompt_template.txt", "r") as file:
-    #         return file.read()
-
+        return self._level()
+    
+    def _level(self):
+        return self.db_connector.find({}, "levels")["gpt"]
 
     def _api_key(self, config_file="./config/config.json"):
         with open(config_file, "r") as config:
@@ -56,14 +42,6 @@ class GPTClient:
         return self._api_key()
 
     def formulate_message(self, role: str, content: str) -> Dict:
-        """
-        Args:
-            role (str): role in chat
-            content (str): content of message
-
-        Returns:
-            dict: returns a dict to be added to the chat json file
-        """
         return {"role": role, "content": content}
 
     def retrieve_chat(self) -> List[Dict]:
@@ -86,7 +64,7 @@ class GPTClient:
         ]
         return messages_gpt
 
-    def query_gpt(self, messages: List[Dict]) -> None:
+    def query_gpt(self, messages: List[Dict]) -> dict:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
@@ -94,36 +72,38 @@ class GPTClient:
             **self.level
             # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
         )
-        self.answer = response["choices"][0]["message"]["content"]
+        return response["choices"][0]["message"]["content"]
 
     def start_new_chat(self, initial_prompt) -> dict:
         messages = self.formulate_message(role="user", content=initial_prompt)
         return self.query_gpt([messages])
     
-    def create_lesson(self, lesson_prompt) -> dict:
-        messages = self.retrieve_chat()
-        question = self.formulate_message(role="user", content=lesson_prompt)
-        messages += [question]
-        return self.query_gpt(messages)
-
-    def discuss_topic(self, topic_prompt) -> dict:
-        messages = self.retrieve_chat()
-        question = self.formulate_message(role="user", content=topic_prompt)
-        messages += [question]
-        return self.query_gpt(messages)
-
     @timeit
-    def ask_gpt(self, question, initial_prompt) -> dict:            
-        question = self.formulate_message(role="user", content=question)
+    def ask_gpt(self, initial_prompt, prompt = None) -> dict:            
+        
         chat = self.retrieve_chat()
+        
         inital_prompt = self.formulate_message(role="user", content=initial_prompt)
         chat.insert(0, inital_prompt)
-        chat.append(question)
+        
+        if(prompt):
+            prompt = self.formulate_message(role="user", content=prompt)
+            chat.append(prompt)
 
         self.answer = self.query_gpt(chat)
         return self.answer
 
+    # def create_lesson(self, lesson_prompt) -> dict:
+    #     messages = self.retrieve_chat()
+    #     question = self.formulate_message(role="user", content=lesson_prompt)
+    #     messages += [question]
+    #     return self.query_gpt(messages)
 
+    # def discuss_topic(self, topic_prompt) -> dict:
+    #     messages = self.retrieve_chat()
+    #     question = self.formulate_message(role="user", content=topic_prompt)
+    #     messages += [question]
+    #     return self.query_gpt(messages)
 
 
 if __name__ == "__main__":

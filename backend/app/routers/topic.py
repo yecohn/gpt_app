@@ -53,13 +53,15 @@ async def triggerTopic(
     gpt = GPTClient()
     openai.api_key = gpt.api_key
 
+    initial_prompt = mongo_db.db['Chats'].find_one({"user_id": messagechat.user.id})['initial_prompt']
+
     transcript = mongo_db.find(
         collection_name="topics", query={"topic_id": topic_id}
     ).get("transcript")
     topic_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["topic_prompt_template"]
-
     topic_prompt['video_summary'] = transcript
-    answer = gpt.discuss_topic(topic_prompt)
+
+    answer = gpt.ask_gpt(initial_prompt, topic_prompt)
     answer_json = {
         "user": {"id": 0, "name": "ai"},
         "text": answer,

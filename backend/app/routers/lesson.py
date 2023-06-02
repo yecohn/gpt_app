@@ -11,8 +11,9 @@ async def topic_list(
 ):
     gpt = GPTClient()
     lesson_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["lesson_prompt_template"]
+    initial_prompt = mongo_db.db['Chats'].find_one({"user_id": messagechat.user.id})['initial_prompt']
 
-    lesson = gpt.create_lesson(lesson_prompt)
+    lesson = gpt.ask_gpt(initial_prompt, lesson_prompt)
     
     res = lesson
     return res

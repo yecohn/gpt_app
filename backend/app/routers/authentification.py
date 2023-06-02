@@ -97,7 +97,7 @@ async def signup(inf: Userinf, sql_db=Depends(access_sql), mongo_db: MongoConnec
 
     gpt = GPTClient()
     openai.api_key = gpt.api_key
-    answer = gpt.start_new_chat(initial_prompt)
+    answer = gpt.ask_gpt(initial_prompt)
     answer_json = formulate_message(user_id, 'ai', 'system', answer, datetime.now())
 
     mongo_db.push(

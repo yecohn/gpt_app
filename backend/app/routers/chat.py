@@ -77,7 +77,7 @@ async def answer(
 
     initial_prompt = mongo_db.db['Chats'].find_one({"user_id": messagechat.user.id})['initial_prompt']
     question = messagechat.text
-    answer = gpt.ask_gpt(question, initial_prompt)
+    answer = gpt.ask_gpt(initial_prompt, question)
 
     question_json = formulate_message(messagechat.user.id, usr.username, 'user', question, messagechat.createdAt)
     answer_json = formulate_message(messagechat.user.id, 'ai', 'system', answer, messagechat.createdAt)
@@ -109,7 +109,7 @@ async def reset_chat(
         collection_name='Chats',
     )['initial_prompt']
     
-    answer = gpt.start_new_chat(initial_prompt)
+    answer = gpt.ask_gpt(initial_prompt)
     answer_json = formulate_message(id, 'ai', 'system', answer, datetime.now())
 
     mongo_db.push(
