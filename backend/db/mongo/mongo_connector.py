@@ -22,7 +22,7 @@ class MongoConnector:
     def insert_one(self, data, collection_name):
         self.db[collection_name].insert_one(data)
 
-    def delete(self, data, collection_name):
+    def delete_one(self, data, collection_name):
         self.db[collection_name].delete_one(data)
 
     def update(self, data, new_data, collection_name):

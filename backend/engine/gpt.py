@@ -40,10 +40,10 @@ class GPTClient:
     #     print(template_text)
     #     return template_text
 
-    @property
-    def initial_prompt(self):
-        with open("./data/initial_prompt_template.txt", "r") as file:
-            return file.read()
+    # @property
+    # def initial_prompt(self):
+    #     with open("./data/initial_prompt_template.txt", "r") as file:
+    #         return file.read()
 
 
     def _api_key(self, config_file="./config/config.json"):
@@ -96,28 +96,29 @@ class GPTClient:
         )
         self.answer = response["choices"][0]["message"]["content"]
 
-    def start_new_chat(self):
-        messages = self.formulate_message(role="user", content=self.initial_prompt)
-        self.query_gpt([messages])
+    def start_new_chat(self, initial_prompt) -> dict:
+        messages = self.formulate_message(role="user", content=initial_prompt)
+        return self.query_gpt([messages])
     
     def create_lesson(self, lesson_prompt) -> dict:
-        messages = self.retrieve_chat().append(json.loads((lesson_prompt).strip()))
+        messages = self.retrieve_chat()
+        question = self.formulate_message(role="user", content=lesson_prompt)
+        messages += [question]
         return self.query_gpt(messages)
 
-    def ask_gpt_about_topic(self, transcript, topic_prompt) -> dict:
+    def discuss_topic(self, topic_prompt) -> dict:
         messages = self.retrieve_chat()
-        question = topic_prompt + "\n" + transcript
-        question = self.formulate_message(role="user", content=question)
+        question = self.formulate_message(role="user", content=topic_prompt)
         messages += [question]
         return self.query_gpt(messages)
 
     @timeit
-    def ask_gpt(self, question) -> dict:
-        question_gpt = {"role": "user", "content": question}
+    def ask_gpt(self, question, initial_prompt) -> dict:            
+        question = self.formulate_message(role="user", content=question)
         chat = self.retrieve_chat()
-        inital_prompt = {"role": "user", "content": self.initial_prompt}
+        inital_prompt = self.formulate_message(role="user", content=initial_prompt)
         chat.insert(0, inital_prompt)
-        chat.append(question_gpt)
+        chat.append(question)
 
         self.answer = self.query_gpt(chat)
         return self.answer

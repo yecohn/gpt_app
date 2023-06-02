@@ -1,16 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Security
-from fastapi import UploadFile, File, Depends
-from backend.db.sql.sql_connector import access_sql
-from backend.db.sql.tables import User
-from backend.db.mongo.mongo_connector import access_mongo
+from fastapi import APIRouter, Depends
+from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.engine.gpt import GPTClient
-from backend.engine.speech_to_text import STT
-from backend.engine.text_to_speech import GCPTTS
-from backend.app.users.user import UserInfo
 import openai
-from google.cloud import speech
-from ..oauth2 import get_current_user
-from backend.app.models import MessageChat
 from datetime import datetime
 
 router = APIRouter()
@@ -18,7 +9,7 @@ router = APIRouter()
 
 @router.get("/topics/", status_code=200)
 async def topic_list(
-    mongo_db=Depends(access_mongo),
+    mongo_db: MongoConnector = Depends(access_mongo),
 ):
     """_summary_
 
@@ -48,7 +39,7 @@ async def topic_list(
 async def triggerTopic(
     topic_id: int,
     user_id: int,
-    mongo_db=Depends(access_mongo),
+    mongo_db: MongoConnector = Depends(access_mongo),
 ):
     """_summary_
 
@@ -60,15 +51,15 @@ async def triggerTopic(
         _type_: _description_
     """
     gpt = GPTClient()
+    openai.api_key = gpt.api_key
+
     transcript = mongo_db.find(
         collection_name="topics", query={"topic_id": topic_id}
     ).get("transcript")
-    topic_prompt = (
-        mongo_db.find(collection_name="metadata")
-        .get("GPT_metadata")
-        .get("topic_prompt")
-    )
-    answer = gpt.ask_gpt_about_topic(transcript, topic_prompt)
+    topic_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["topic_prompt_template"]
+
+    topic_prompt['video_summary'] = transcript
+    answer = gpt.discuss_topic(topic_prompt)
     answer_json = {
         "user": {"id": 0, "name": "ai"},
         "text": answer,

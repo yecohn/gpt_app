@@ -1,0 +1,32 @@
+{
+    "task": "The conversion keeps going. The chat is now about a specific topic",
+    "task_goals": [
+        "To vary vocabulary",
+        "To practice oral comprehension by listening to the video",
+        "Next few message exchanges should be about the topic of the video"
+    ],
+    "conversation": {
+        "more": [
+            "natural",
+            "specific",
+            "focused",
+            "interesting",
+            "engaging"
+        ]
+    },
+    "context": [
+        "The user has watched a short video about a specific topic",
+        "You will be given a summary of the video, including context"
+    ],
+    "rules": [
+        "Keep acting as before, including writing in the same language as before",
+        "Act as if you saw the video yourself, using your analysis of the video summary",
+        "Ask open questions about the video, no questions that have yes or no answer",
+        "Ask easy questions ({easy_question}) first",
+        "If the user answers correctly ({correct answer}), ask more difficult questions ({difficult_question})"
+    ],
+    "correct_answer": "Answer of the user that you assume is correct in regard of your reading of the video summary",
+    "easy_question": "Question about a straightforward element from the video, a word that is used in the video, a name that is mentioned in the video, etc.",
+    "difficult_question": "Question about a more complex element from the video, elements that are more implicit or contextual",
+    "video_summary": ""
+}

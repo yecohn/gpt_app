@@ -1,14 +1,27 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from backend.db.sql.sql_connector import access_sql
-from backend.db.sql.tables import User
+from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
+from backend.db.sql.tables import User, Chat
 from backend.app.models import *
 from backend.app.users.hashing import Hash
 from .token import *
 from fastapi.security import OAuth2PasswordRequestForm
+from backend.engine.gpt import GPTClient
+import openai
+from datetime import datetime
+
 
 router = APIRouter(tags=["AUTHENTIFICATION"])
 
+def formulate_message(user_id: int, user_name: str, origin: str, text: str, date: datetime):
+    message = {
+        "user": {"id": user_id, "name": user_name},
+        'origin': origin,
+        "text": text,
+        "createdAt": date,
+    }
+    return message
 
 @router.post("/login")
 async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_sql)):
@@ -45,7 +58,7 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
 
 
 @router.post("/register", status_code=200)
-async def signup(inf: Userinf, db=Depends(access_sql)):
+async def signup(inf: Userinf, sql_db=Depends(access_sql), mongo_db: MongoConnector = Depends(access_mongo)):
     """_summary_
 
     Args:
@@ -57,7 +70,7 @@ async def signup(inf: Userinf, db=Depends(access_sql)):
     """
     print(inf.username, inf.password, inf.email, inf.level)
 
-    db.add(
+    sql_db.add(
         User(
             email=inf.email,
             password=Hash.bcrypt(inf.password),
@@ -67,4 +80,29 @@ async def signup(inf: Userinf, db=Depends(access_sql)):
             # target=inf.target,
         )
     )
-    return {"message": "user created", "success": True}
+    user_id = sql_db.query(User, query=User.username == inf.username).id
+    initial_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["initial_prompt_template"]
+    initial_prompt['native_language'] = 'English'
+    initial_prompt['target_language'] = 'French'
+    initial_prompt['user']['name'] = inf.username
+    initial_prompt['user']['level'] = 'Beginner'
+    initial_prompt['parameters']['level'] = 'Beginner'
+    chat = {
+        'user_id': user_id,
+        'chat_id': user_id,
+        'messages': [],
+        'initial_prompt': initial_prompt,
+    }
+    mongo_db.insert_one(chat, "chats")
+
+    gpt = GPTClient()
+    openai.api_key = gpt.api_key
+    answer = gpt.start_new_chat(initial_prompt)
+    answer_json = formulate_message(user_id, 'ai', 'system', answer, datetime.now())
+
+    mongo_db.push(
+        collection_name="chats",
+        query={"user_id": user_id},
+        setter={"$push": {"messages": answer_json}},
+    )
+    return {"message": "user and chat created", "success": True}

@@ -1,1 +1,0 @@
-{language} = French. {native} = English. Create a one page {language} lesson using grammar, typo, syntax errors I made since the beginning of the chat with you. Write the lesson in language {native}

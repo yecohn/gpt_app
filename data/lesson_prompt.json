@@ -1,0 +1,25 @@
+{
+    "task": "Write a lesson to learn about the target language",
+    "lesson_goals": [
+        "Improve proficiency in the target language",
+        "Review language mistakes that were made during the conversation",
+        "Alternate between conversation style and lesson style learning",
+        "Review proficiency in target language"
+    ],
+    "rules": [
+        "Your answer is formatted following the {format} description",
+        "The lesson itself is written in the native language"
+    ],
+    "mistakes_type": [
+        "Grammar", 
+        "Syntax"
+    ],
+    "proficiency": {
+        "understanding": "give a general appreciation of the user's understanding of topics discussed. Give examples of misunderstanding",
+        "topics": "summarize wrong user answers about topics that were discussed",
+        "vocabulary": "Qualitatively assess the user's vocabulary variety"
+    },
+    "native_language": "",
+    "target_language": "",
+    "output_format": "Format your answer as a React native return() statement of a <View> component including the different mistakes and their correction and proficiency assessements"
+}

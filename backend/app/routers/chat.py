@@ -35,6 +35,14 @@ stt = STT(
 
 router = APIRouter()
 
+def formulate_message(user_id: int, user_name: str, origin: str, text: str, date: datetime):
+    message = {
+        "user": {"id": user_id, "name": user_name},
+        'origin': origin,
+        "text": text,
+        "createdAt": date,
+    }
+    return message
 
 ####### Implement this chat with websocket architecture ##############################
 @router.get("/chat/{id}", status_code=200)
@@ -42,7 +50,7 @@ async def load_chat(
     id: int,
     mongo_db: MongoConnector = Depends(access_mongo),
 ):
-    """load previous chat from database
+    """load chat from database
 
     Args:
         id (int): id of user
@@ -52,40 +60,7 @@ async def load_chat(
     """
     # chat = mongo_db.find(collection_name="chat", query={"user_id": id})
     chat = mongo_db.db["chats"].find_one({"user_id": id})
-    print(chat)
     res = {"messages": chat["messages"], "user_id": id}
-    return res
-
-@router.get("/chat/{id}/reset", status_code=200)
-async def reset_chat(
-    id: int,
-    mongo_db: MongoConnector = Depends(access_mongo),
-):
-    """load previous chat from database
-
-    Args:
-        id (int): id of user
-    """
-    gpt = GPTClient()
-    openai.api_key = gpt.api_key
-    mongo_db.db["chats"].delete_one({"user_id": id})
-    gpt.start_new_chat()
-
-    answer_json = {
-    "user": {"id": id, "name": "ai"},
-    'origin': 'system',
-    "text": gpt.answer,
-    "createdAt": datetime.now(),
-    }
-    # TO COMPLETE
-    new_chat = {
-        "user_id": id,
-        "chat_id": 1,
-        "messages": [answer_json],
-        "createdAt": datetime.now(),
-    }
-    mongo_db.insert_one(new_chat)
-    res = {'gpt_first_message': gpt.answer}
     return res
 
 
@@ -95,42 +70,55 @@ async def answer(
     mongo_db: MongoConnector = Depends(access_mongo),
     sql_db=Depends(access_sql),
 ):
-    """answer to a message
-
-    Args:
-        id (int): id of user
-        message (str): message to answer
-
-    Returns:
-        _type_: _description_
-    """
+    
     usr = UserInfo(userid=messagechat.user.id, db_connector=sql_db)
     gpt = GPTClient(user=usr, db_connector=mongo_db)
     openai.api_key = gpt.api_key
-    question = messagechat.text
-    answer = gpt.ask_gpt(question)
-    question_json = {
-        "user": {"id": messagechat.user.id, "name": usr.username},
-        'origin': 'user',
-        "text": question,
-        "createdAt": messagechat.createdAt,
-    }
 
-    answer_json = {
-        "user": {"id": messagechat.user.id, "name": "ai"},
-        'origin': 'system',
-        "text": answer,
-        "createdAt": messagechat.createdAt,
-    }
+    initial_prompt = mongo_db.db['Chats'].find_one({"user_id": messagechat.user.id})['initial_prompt']
+    question = messagechat.text
+    answer = gpt.ask_gpt(question, initial_prompt)
+
+    question_json = formulate_message(messagechat.user.id, usr.username, 'user', question, messagechat.createdAt)
+    answer_json = formulate_message(messagechat.user.id, 'ai', 'system', answer, messagechat.createdAt)
 
     mongo_db.push(
-        "chats",
-        {"user_id": messagechat.user.id},
-        {"$push": {"messages": {"$each": [question_json, answer_json]}}},
+        collection_name="chats",
+        query={"user_id": messagechat.user.id},
+        update={"$push": {"messages": {"$each": [question_json, answer_json]}}},
     )
 
-    # _ = tts.generate_speech(answer)
     return {"ok": True}
+
+@router.get("/chat/{id}/reset", status_code=200)
+async def reset_chat(
+    id: int,
+    mongo_db: MongoConnector = Depends(access_mongo),
+):
+
+    gpt = GPTClient()
+    openai.api_key = gpt.api_key
+    # find messages of chat in mongo db and update to empty messages
+    mongo_db.update(
+        collection_name="chats",
+        query={"user_id": id},
+        update={"$set": {"messages": []}},
+    )
+    initial_prompt = mongo_db.find(
+        query={'chat_id': id},
+        collection_name='Chats',
+    )['initial_prompt']
+    
+    answer = gpt.start_new_chat(initial_prompt)
+    answer_json = formulate_message(id, 'ai', 'system', answer, datetime.now())
+
+    mongo_db.push(
+        collection_name='chats',
+        query={'chat_id': id},
+        setter={"$push": {'messages': answer_json}},
+    )
+    res = {'message': 'messages deleted and new chat started', 'success': True}
+    return res
 
 
 # @router.post("/chat/{id}")

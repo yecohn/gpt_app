@@ -1,1 +1,0 @@
-From now on, the chat's topic will be specific and will be described at the end of this prompt. Abide by the same rules as defined in the initial prompt, but ask questions about the following topic: 
