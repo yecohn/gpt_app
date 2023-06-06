@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
-from fastapi import Depends
+
+from fastapi import APIRouter, Depends, HTTPException, status, Security, WebSocket
+from fastapi import UploadFile, File, Depends
 from backend.db.sql.sql_connector import access_sql
 from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.engine.gpt import GPTClient
@@ -10,6 +11,8 @@ import openai
 from google.cloud import speech
 from backend.app.models import MessageChat
 from datetime import datetime
+import time
+import json
 
 tts = GCPTTS(language="fr-FR", speaker="fr-FR-Wavenet-A")
 client = speech.SpeechClient()
@@ -172,3 +175,62 @@ async def reset_chat(
 
 
 ##############################################################################
+from fastapi import FastAPI, WebSocket
+from fastapi.responses import HTMLResponse
+
+
+html = """
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <body>
+        <h1>WebSocket Chat</h1>
+        <form action="" onsubmit="sendMessage(event)">
+            <input type="text" id="messageText" autocomplete="off"/>
+            <button>Send</button>
+        </form>
+        <ul id='messages'>
+        </ul>
+        <script>
+            var ws = new WebSocket("ws://localhost:8000/ws");
+            ws.onmessage = function(event) {
+                var messages = document.getElementById('messages')
+                var message = document.createElement('li')
+                var content = document.createTextNode(event.data)
+                message.appendChild(content)
+                messages.appendChild(message)
+            };
+            function sendMessage(event) {
+                var input = document.getElementById("messageText")
+                ws.send(input.value)
+                input.value = ''
+                event.preventDefault()
+            }
+        </script>
+    </body>
+</html>
+"""
+
+
+@router.get("/")
+async def get():
+    return HTMLResponse(html)
+
+
+@router.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    data = "hello I am a grut "
+    while True:
+        recieve = await websocket.receive_text()
+        print(recieve)
+        message = {
+            "user": {"id": 1, "name": "AI"},
+            "origin": "system",
+            "text": data,
+            "createdAt": datetime.now(),
+        }
+        j = json.dumps(message, default=str)
+        await websocket.send_text(j)
