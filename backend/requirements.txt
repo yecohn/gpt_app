@@ -10,6 +10,7 @@ librosa
 scipy
 fastapi[all]
 google-cloud-texttospeech
+google-cloud-speech
 pymongo[srv]
 SQLAlchemy==2.0.7
 moviepy
@@ -21,3 +22,4 @@ python-multipart
 pg8000
 pymongo
 pymysql
+gTTS

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+NAME=fastapi-app
+DIR=${PWD}
+USER=${USER}
+WORKERS=3
+WORKER_CLASS=uvicorn.workers.UvicornWorker
+VENV=$DIR/.venv/bin/activate
+BIND=unix:$DIR/run/gunicorn.sock
+LOG_LEVEL=error
+
+cd $DIR
+source $VENV
+
+exec gunicorn backend.app.app:app \
+  --name $NAME \
+  --workers $WORKERS \
+  --worker-class $WORKER_CLASS \
+  --user=$USER \
+  --bind=$BIND \
