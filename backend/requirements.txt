@@ -22,8 +22,5 @@ python-multipart
 pg8000
 pymongo
 pymysql
-<<<<<<< HEAD
 gTTS
-=======
 googletrans
->>>>>>> 87895ca0a62081f6b6308349d5bb33cf8329f73e
