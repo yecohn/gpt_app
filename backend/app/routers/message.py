@@ -12,7 +12,7 @@ translator = Translator()
 async def translate(
     info: TranslationInfo,
 ):
-    info = json.loads(info)
+    # info = json.loads(info)
     word = info['word']
     print(f'Endpoint of translation called with word: {word} of type {type(word)}')
     print('Translation in progress...') 
