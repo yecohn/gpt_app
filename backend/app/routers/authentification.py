@@ -88,13 +88,13 @@ async def signup(
     
     
     initial_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["initial_prompt_template"]
-    print(initial_prompt)
+
     initial_prompt['native_language'] = 'English'
     initial_prompt['target_language'] = 'Hebrew'
     initial_prompt['user']['name'] = inf.username
     initial_prompt['user']['level'] = 'Beginner'
     initial_prompt['parameters']['level'] = 'Beginner'
-    print(initial_prompt)
+
     chat = {
         'user_id': user_id,
         'chat_id': user_id,
