@@ -8,7 +8,7 @@ translator = Translator()
 
 @router.post("/chat/{user_id}/message/translate", status_code=200)
 async def translate(
-    info: TranslationInfo = Depends(),
+    info: TranslationInfo,
 ):
     word = info.word
     print('Endpoint of translation')
