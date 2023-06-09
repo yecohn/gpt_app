@@ -4,7 +4,7 @@ from google_trans_new import google_translator
 from backend.app.models import TranslationInfo
 
 router = APIRouter()
-translator = google_translator()
+translator = Translator()
 
 
 @router.post("/chat/{user_id}/message/translate", status_code=200)
