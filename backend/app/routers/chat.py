@@ -13,9 +13,7 @@ from backend.app.models import MessageChat
 from datetime import datetime
 import time
 import json
-from googletrans import Translator
 
-translator = Translator()
 
 
 tts = GCPTTS(language="fr-FR", speaker="fr-FR-Wavenet-A")
@@ -128,18 +126,6 @@ async def reset_chat(
     return res
 
 
-
-
-
-@router.post("/chat/{user_id}/message/translate", status_code=200)
-async def translate(
-    word: str,
-):
-    print('Endpoint of translation')
-    translationObject = translator.translate(word)
-    print(translationObject.text)
-    translation = translationObject.text
-    return {'translation': translation}
 
 
 # @router.post("/chat/{id}")

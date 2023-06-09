@@ -20,6 +20,9 @@ class Logininf(BaseModel):
     username: str
     password: str
 
+class TranslationInfo(BaseModel):
+    word: str
+
 
 class Item(BaseModel):
     title: str
