@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
 from googletrans import Translator
-from google_trans_new import google_translator
+# from google_trans_new import google_translator
 from backend.app.models import TranslationInfo
 
 router = APIRouter()
-translator = google_translator()
-
+# translator = google_translator()
+translator = Translator()
 
 @router.post("/chat/{user_id}/message/translate", status_code=200)
 async def translate(
@@ -14,7 +14,6 @@ async def translate(
     word = info.word
     print(f'Endpoint of translation called with word: {word} of type {type(word)}')
     print('Translation in progress...')
-    translationObject = translator.translate(word, lang_tgt='en', lang_src='es')
-    # print(f'Translation: {translationObject.text}')
-    # translation = translationObject.text
-    return {'translation': translationObject}
+    translationObject = translator.translate(word)#, lang_tgt='en', lang_src='es')
+    print(f'Translation: {translationObject.text}')
+    return {'translation': translationObject.text}
