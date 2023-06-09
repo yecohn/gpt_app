@@ -13,7 +13,7 @@ async def translate(
 ):
     word = info.word
     print(f'Endpoint of translation called with word: {word} of type {type(word)}')
-    print('Translation in progress...')
+    print('Translation in progress...') 
     translationObject = translator.translate(word)#, lang_tgt='en', lang_src='es')
-    print(f'Translation: {translationObject.text}')
+    print('Translation object received: ' + translationObject)
     return {'translation': translationObject.text}
