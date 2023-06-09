@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from googletrans import Translator
 from backend.app.models import TranslationInfo
 
@@ -8,7 +8,7 @@ translator = Translator()
 
 @router.post("/chat/{user_id}/message/translate", status_code=200)
 async def translate(
-    info: TranslationInfo,
+    info: TranslationInfo = Depends(),
 ):
     word = info.word
     print('Endpoint of translation')
