@@ -79,8 +79,8 @@ async def answer(
     usr = UserInfo(userid=messagechat.user.id, db_connector=sql_db)
     gpt = GPTClient(user=usr, db_connector=mongo_db)
     openai.api_key = gpt.api_key
-
-    chat = mongo_db.db['Chats'].find_one({"user_id": id})
+    print(id, messagechat)
+    chat = mongo_db.db['chats'].find_one({"user_id": id})
     initial_prompt = chat['initial_prompt']
     question = messagechat.text
     answer = gpt.ask_gpt(initial_prompt, question)
@@ -112,7 +112,7 @@ async def reset_chat(
     )
     initial_prompt = mongo_db.find(
         query={'chat_id': id},
-        collection_name='Chats',
+        collection_name='chats',
     )['initial_prompt']
     
     answer = gpt.ask_gpt(initial_prompt)
