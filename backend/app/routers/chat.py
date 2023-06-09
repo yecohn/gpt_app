@@ -91,7 +91,7 @@ async def answer(
     mongo_db.push(
         collection_name="chats",
         query={"user_id": messagechat.user.id},
-        update={"$push": {"messages": {"$each": [question_json, answer_json]}}},
+        setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
     )
 
     return {"ok": True}
