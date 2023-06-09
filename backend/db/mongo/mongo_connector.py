@@ -8,7 +8,6 @@ class MongoConnector:
     def __init__(self, db_name):
         self.client = MongoClient(self.secret)
         self.db = self.client[db_name]
-        print("initialized db connector")
 
     @property
     def secret(cls):

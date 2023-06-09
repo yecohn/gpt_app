@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends
 from backend.db.sql.sql_connector import access_sql
 from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
-from backend.db.sql.tables import User, Chat
+from backend.db.sql.tables import User
 from backend.app.models import *
 from backend.app.users.hashing import Hash
 from .token import *
