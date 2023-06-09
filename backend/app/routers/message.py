@@ -5,7 +5,7 @@ router = APIRouter()
 translator = Translator()
 
 
-@router.post("/translate", status_code=200)
+@router.post("/chat/{user_id}/message/translate", status_code=200)
 async def translate(
     word: str,
 ):
