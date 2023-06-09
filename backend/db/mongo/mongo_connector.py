@@ -24,9 +24,8 @@ class MongoConnector:
     def delete_one(self, data, collection_name):
         self.db[collection_name].delete_one(data)
 
-    def update(self, data, new_data, collection_name):
-        setter = {"$set": new_data}
-        self.db[collection_name].update_one(data, setter)
+    def update(self, query, setter, collection_name):
+        self.db[collection_name].update_one(query, setter)
 
     def find(self, query, collection_name):
         result = self.db[f"{collection_name}"].find_one(query)

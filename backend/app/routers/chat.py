@@ -82,6 +82,7 @@ async def answer(
     print(id, messagechat)
     chat = mongo_db.db['chats'].find_one({"user_id": id})
     initial_prompt = chat['initial_prompt']
+    messages = chat["messages"]
     question = messagechat.text
     answer = gpt.ask_gpt(initial_prompt, question)
 
@@ -91,7 +92,7 @@ async def answer(
     mongo_db.push(
         collection_name="chats",
         query={"user_id": messagechat.user.id},
-        setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
+        setter={"$push": {"messages": messages + [question_json, answer_json]}},
     )
 
     return {"ok": True}
@@ -110,11 +111,8 @@ async def reset_chat(
     openai.api_key = gpt.api_key
     
     # find messages of chat in mongo db and update to empty messages
-    mongo_db.update(
-        collection_name="chats",
-        query={"user_id": id},
-        setter={"$set": {"messages": []}},
-    )
+
+
     initial_prompt = mongo_db.find(
         query={'chat_id': id},
         collection_name='chats',
