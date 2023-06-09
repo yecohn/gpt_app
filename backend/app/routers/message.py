@@ -5,10 +5,11 @@ router = APIRouter()
 translator = Translator()
 
 
-@router.get("/translate/{word}", status_code=200)
+@router.post("/translate", status_code=200)
 async def translate(
     word: str,
 ):
     translationObject = translator.translate(word)
+    print(translationObject.text)
     translation = translationObject.text
     return translation

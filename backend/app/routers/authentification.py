@@ -36,7 +36,7 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
     """
     username, password = info.username, info.password
     user = db.query(User, query=User.username == username)
-    print(user.id)
+    # print(user.id)
     # if not user:
     #     raise HTTPException(
     #         status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
