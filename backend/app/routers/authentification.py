@@ -85,7 +85,8 @@ async def signup(
         )
     )
     user_id = sql_db.query(User, query=User.username == inf.username).id
-    
+    usr = UserInfo(userid=user_id, db_connector=sql_db)
+    gpt = GPTClient(user=usr, db_connector=mongo_db)   
     
     initial_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["initial_prompt_template"]
 
@@ -103,8 +104,7 @@ async def signup(
     }
     mongo_db.insert_one(chat, "chats")
 
-    usr = UserInfo(userid=user_id, db_connector=sql_db)
-    gpt = GPTClient(user=usr, db_connector=mongo_db)
+
     openai.api_key = gpt.api_key
     answer = gpt.ask_gpt(initial_prompt)
     answer_json = formulate_message(user_id, 'ai', 'system', answer, datetime.now())

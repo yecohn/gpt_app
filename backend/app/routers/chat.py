@@ -100,15 +100,20 @@ async def answer(
 async def reset_chat(
     id: int,
     mongo_db: MongoConnector = Depends(access_mongo),
+    sql_db=Depends(access_sql),
 ):
 
-    gpt = GPTClient()
+    user_id = id
+    usr = UserInfo(userid=user_id, db_connector=sql_db)
+    gpt = GPTClient(user=usr, db_connector=mongo_db)       
+    
     openai.api_key = gpt.api_key
+    
     # find messages of chat in mongo db and update to empty messages
     mongo_db.update(
         collection_name="chats",
         query={"user_id": id},
-        update={"$set": {"messages": []}},
+        setter={"$set": {"messages": []}},
     )
     initial_prompt = mongo_db.find(
         query={'chat_id': id},
