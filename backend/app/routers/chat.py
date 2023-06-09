@@ -89,13 +89,15 @@ async def answer(
     question_json = formulate_message(messagechat.user.id, usr.username, 'user', question, messagechat.createdAt)
     answer_json = formulate_message(messagechat.user.id, 'ai', 'system', answer, messagechat.createdAt)
 
+
     mongo_db.push(
         collection_name="chats",
         query={"user_id": messagechat.user.id},
-        setter={"$push": {"messages": [question_json, answer_json]}},
+        setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
     )
-
     return {"ok": True}
+
+
 
 @router.get("/chat/{id}/reset", status_code=200)
 async def reset_chat(
