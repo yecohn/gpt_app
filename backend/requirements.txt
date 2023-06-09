@@ -23,5 +23,4 @@ pg8000
 pymongo
 pymysql
 gTTS
-googletrans
-google_trans_new
+googletrans==4.0.0rc1
