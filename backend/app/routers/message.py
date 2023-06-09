@@ -11,8 +11,9 @@ async def translate(
     info: TranslationInfo,
 ):
     word = info.word
-    print('Endpoint of translation')
+    print(f'Endpoint of translation called with word: {word} of type {type(word)}')
+    print('Translation in progress...')
     translationObject = translator.translate(word)
-    print(translationObject.text)
+    print(f'Translation: {translationObject.text}')
     translation = translationObject.text
     return {'translation': translation}
