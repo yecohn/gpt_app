@@ -24,3 +24,4 @@ pymongo
 pymysql
 gTTS
 googletrans
+google_trans_new
