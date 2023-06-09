@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends
 from googletrans import Translator
-from google_trans_new import google_translator
 from backend.app.models import TranslationInfo
 
 router = APIRouter()
@@ -14,6 +13,7 @@ async def translate(
     word = info.word
     print(f'Endpoint of translation called with word: {word} of type {type(word)}')
     print('Translation in progress...')
-    translation = translator.translate(word, lang_tgt='en')
-    print(f'Translation: {translation}')
+    translationObject = translator.translate(word)
+    print(f'Translation: {translationObject.text}')
+    translation = translationObject.text
     return {'translation': translation}
