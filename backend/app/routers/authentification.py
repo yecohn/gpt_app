@@ -9,6 +9,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from backend.engine.gpt import GPTClient
 import openai
 from datetime import datetime
+from backend.app.users.user import UserInfo
 
 
 router = APIRouter(tags=["AUTHENTIFICATION"])
@@ -57,7 +58,11 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
 
 
 @router.post("/register", status_code=200)
-async def signup(inf: Userinf, sql_db=Depends(access_sql), mongo_db: MongoConnector = Depends(access_mongo)):
+async def signup(
+    inf: Userinf, 
+    sql_db=Depends(access_sql), 
+    mongo_db: MongoConnector = Depends(access_mongo)
+    ):
     """_summary_
 
     Args:
@@ -80,12 +85,16 @@ async def signup(inf: Userinf, sql_db=Depends(access_sql), mongo_db: MongoConnec
         )
     )
     user_id = sql_db.query(User, query=User.username == inf.username).id
+    
+    
     initial_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["initial_prompt_template"]
+    print(initial_prompt)
     initial_prompt['native_language'] = 'English'
-    initial_prompt['target_language'] = 'French'
+    initial_prompt['target_language'] = 'Hebrew'
     initial_prompt['user']['name'] = inf.username
     initial_prompt['user']['level'] = 'Beginner'
     initial_prompt['parameters']['level'] = 'Beginner'
+    print(initial_prompt)
     chat = {
         'user_id': user_id,
         'chat_id': user_id,
@@ -94,7 +103,8 @@ async def signup(inf: Userinf, sql_db=Depends(access_sql), mongo_db: MongoConnec
     }
     mongo_db.insert_one(chat, "chats")
 
-    gpt = GPTClient()
+    usr = UserInfo(userid=user_id, db_connector=sql_db)
+    gpt = GPTClient(user=usr, db_connector=mongo_db)
     openai.api_key = gpt.api_key
     answer = gpt.ask_gpt(initial_prompt)
     answer_json = formulate_message(user_id, 'ai', 'system', answer, datetime.now())

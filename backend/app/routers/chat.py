@@ -1,6 +1,6 @@
 
-from fastapi import APIRouter, Depends, HTTPException, status, Security, WebSocket
-from fastapi import UploadFile, File, Depends
+from fastapi import APIRouter, Depends, WebSocket
+from fastapi import Depends
 from backend.db.sql.sql_connector import access_sql
 from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.engine.gpt import GPTClient
@@ -11,7 +11,6 @@ import openai
 from google.cloud import speech
 from backend.app.models import MessageChat
 from datetime import datetime
-import time
 import json
 
 
@@ -72,6 +71,7 @@ async def load_chat(
 @router.post("/chat/{id}/post", status_code=200)
 async def answer(
     messagechat: MessageChat,
+    id: int,
     mongo_db: MongoConnector = Depends(access_mongo),
     sql_db=Depends(access_sql),
 ):
@@ -80,7 +80,8 @@ async def answer(
     gpt = GPTClient(user=usr, db_connector=mongo_db)
     openai.api_key = gpt.api_key
 
-    initial_prompt = mongo_db.db['Chats'].find_one({"user_id": messagechat.user.id})['initial_prompt']
+    chat = mongo_db.db['Chats'].find_one({"user_id": id})
+    initial_prompt = chat['initial_prompt']
     question = messagechat.text
     answer = gpt.ask_gpt(initial_prompt, question)
 
@@ -179,7 +180,7 @@ async def reset_chat(
 
 
 ##############################################################################
-from fastapi import FastAPI, WebSocket
+from fastapi import WebSocket
 from fastapi.responses import HTMLResponse
 
 
