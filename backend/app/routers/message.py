@@ -12,4 +12,4 @@ async def translate(
     translationObject = translator.translate(word)
     print(translationObject.text)
     translation = translationObject.text
-    return translation
+    return {'translation': translation}
