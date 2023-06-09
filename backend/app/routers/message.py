@@ -13,7 +13,8 @@ async def translate(
     info: TranslationInfo,
 ):
     # info = json.loads(info)
-    word = info['word']
+    print(info)
+    word = info.word
     print(f'Endpoint of translation called with word: {word} of type {type(word)}')
     print('Translation in progress...') 
     translationObject = translator.translate(word, src='he')#, lang_tgt='en', lang_src='es')
