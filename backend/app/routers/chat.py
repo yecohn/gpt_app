@@ -92,7 +92,7 @@ async def answer(
     mongo_db.push(
         collection_name="chats",
         query={"user_id": messagechat.user.id},
-        setter={"$push": {"messages": messages + [question_json, answer_json]}},
+        setter={"$push": {"messages": [question_json, answer_json]}},
     )
 
     return {"ok": True}
@@ -124,7 +124,7 @@ async def reset_chat(
     mongo_db.push(
         collection_name='chats',
         query={'chat_id': id},
-        setter={"$push": {'messages': answer_json}},
+        setter={"$set": {'messages': answer_json}},
     )
     res = {'message': 'messages deleted and new chat started', 'success': True}
     return res
