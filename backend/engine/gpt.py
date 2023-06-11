@@ -83,7 +83,7 @@ class GPTClient:
         initial_prompt = self.formulate_message(role="user", content=str(chat["initial_prompt"]))
         chat_messages.insert(0, initial_prompt)
         
-        prompt = self.formulate_message(role="user", content=str(prompt))
+        prompt = self.formulate_message(role="user", content=str(user_prompt))
         chat_messages.append(prompt)
 
         answer = self.query_gpt_api(messages=chat_messages)
