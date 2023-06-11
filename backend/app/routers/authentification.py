@@ -11,7 +11,6 @@ import openai
 from datetime import datetime
 from backend.app.users.user import UserInfo
 
-
 router = APIRouter(tags=["AUTHENTIFICATION"])
 
 def formulate_message(user_id: int, user_name: str, origin: str, text: str, date: datetime):
@@ -34,8 +33,7 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
     Returns:
         : redirect user on chat page with previous chat
     """
-    username, password = info.username, info.password
-    user = db.query(User, query=User.username == username)
+    user = UserInfo.retrieve_user_info_based_on_username(username=info.username)
     # print(user.id)
     # if not user:
     #     raise HTTPException(
@@ -49,7 +47,7 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
         data={"sub": user.username},
     )
 
-
+    
     return {
         "access_token": access_token,
         "token_type": "bearer",
@@ -72,46 +70,11 @@ async def signup(
     Returns:
         _type_: _description_
     """
-    print(inf.username, inf.password, inf.email, inf.level)
-
-    sql_db.add(
-        User(
-            email=inf.email,
-            password=Hash.bcrypt(inf.password),
-            username=inf.username,
-            level=inf.level,
-            # native=inf.native,
-            # target=inf.target,
-        )
-    )
-    user_id = sql_db.query(User, query=User.username == inf.username).id
-    usr = UserInfo(userid=user_id, db_connector=sql_db)
-    gpt = GPTClient(user=usr, db_connector=mongo_db)   
     
-    initial_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["initial_prompt_template"]
+    user_id = UserInfo.add_new_user(inf=inf)
 
-    initial_prompt['native_language'] = 'English'
-    initial_prompt['target_language'] = 'Hebrew'
-    initial_prompt['user']['name'] = inf.username
-    initial_prompt['user']['level'] = 'Beginner'
-    initial_prompt['parameters']['level'] = 'Beginner'
+    gpt = GPTClient()
 
-    chat = {
-        'user_id': user_id,
-        'chat_id': user_id,
-        'messages': [],
-        'initial_prompt': initial_prompt,
-    }
-    mongo_db.insert_one(chat, "chats")
+    gpt.initialize_new_chat(chatID=user_id)
 
-
-    openai.api_key = gpt.api_key
-    answer = gpt.ask_gpt(initial_prompt)
-    answer_json = formulate_message(user_id, 'ai', 'system', answer, datetime.now())
-
-    mongo_db.push(
-        collection_name="chats",
-        query={"user_id": user_id},
-        setter={"$push": {"messages": answer_json}},
-    )
     return {"message": "user and chat created", "success": True}

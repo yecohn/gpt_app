@@ -7,9 +7,7 @@ from backend.utils.decorators import timeit
 from backend.db.sql.sql_connector import SQLConnector, access_sql
 from fastapi import Depends
 from datetime import datetime
-
-
-
+from backend.app.models import Userinf
 
 class GPTClient:
     def __init__(self):
@@ -128,6 +126,32 @@ class GPTClient:
             collection_name="chats",
         )
 
+    def initialize_new_chat(self, chatId: int, inf: Userinf) -> None:
+        initial_prompt = self.metadata["initial_prompt_template"].copy()
+        initial_prompt['native_language'] = inf.nativeLanguage
+        initial_prompt['target_language'] = inf.targetLanguage
+        initial_prompt['user']['name'] = inf.username
+        initial_prompt['user']['level'] = 'Beginner'
+        initial_prompt['parameters']['level'] = 'Beginner'
+
+        initial_prompt = self.formulate_message(role="user", content=str("initial_prompt"))
+        answer = self.query_gpt_api(messages=initial_prompt)
+
+        answer_json = self.formulate_db_message(
+            user_id = chatId, 
+            user_name = 'teaching assistant', 
+            origin = 'system', 
+            text = answer, 
+            date = datetime.now()
+        )
+
+        chat = {
+            'user_id': chatId,
+            'chat_id': chatId,
+            'messages': [answer_json],
+            'initial_prompt': initial_prompt,
+        }
+        self.db_connector.insert_one(chat, "chats")
 
 
     # def start_new_chat(self, initial_prompt) -> dict:
