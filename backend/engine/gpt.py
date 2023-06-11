@@ -11,7 +11,7 @@ from backend.app.models import Userinf
 
 class GPTClient:
     def __init__(self):
-        self.db_connector = access_mongo()
+        self.db_connector = MongoConnector()
 
     @property
     def metadata(self):

@@ -4,7 +4,7 @@ from backend.app.users.hashing import Hash
 from backend.app.models import Userinf
 
 class UserInfo:
-    db_connector = access_sql()
+    db_connector = SQLConnector()
     
     def __init__(
         self, 
