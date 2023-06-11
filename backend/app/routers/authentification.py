@@ -66,6 +66,6 @@ async def signup(inf: Userinf):
 
     gpt = GPTClient()
 
-    gpt.initialize_new_chat(chatId=user_id)
+    gpt.initialize_new_chat(chatId=user_id, inf=inf)
 
     return {"message": "user and chat created", "success": True}
