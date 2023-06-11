@@ -38,7 +38,7 @@ class GPTClient:
             CONFIG = json.load(config)
         return CONFIG["openai_api_key"]
 
-    def formulate_db_message(user_id: int, user_name: str, origin: str, text: str):
+    def formulate_db_message(self, user_id: int, user_name: str, origin: str, text: str):
         message = {
             "user": {"id": user_id, "name": user_name},
             'origin': origin,
@@ -92,7 +92,6 @@ class GPTClient:
             user_name = self.get_username(chatId), 
             origin = "user", 
             text = user_prompt, 
-            date = datetime.now()
         )
         answer_json = self.formulate_db_message(
             user_id = chatId, 
@@ -118,7 +117,6 @@ class GPTClient:
             user_name = 'teaching assistant', 
             origin = 'system', 
             text = answer, 
-            date = datetime.now()
         )
         self.db_connector.update_one(
             query={"chat_id": chatId},
