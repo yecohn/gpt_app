@@ -16,7 +16,7 @@ class UserInfo:
 
     @classmethod
     def retrieve_user_info_based_on_username(cls, username: str):
-        return cls.db_connector.query(User, query= {User.username == username})
+        return cls.db_connector.query(User, query= User.username == username)
         
 
     def retrieve_personal_info(self):
