@@ -111,7 +111,7 @@ class GPTClient:
         chat = self.load_chat(chatId = chatId)
         
         initial_prompt = self.formulate_message(role="user", content=str(chat["initial_prompt"]))
-        answer = self.query_gpt_api(messages=initial_prompt)
+        answer = self.query_gpt_api(messages=[initial_prompt])
 
         answer_json = self.formulate_db_message(
             user_id = chatId, 
@@ -135,7 +135,7 @@ class GPTClient:
         initial_prompt['parameters']['level'] = 'Beginner'
 
         initial_prompt = self.formulate_message(role="user", content=str(initial_prompt))
-        answer = self.query_gpt_api(messages=initial_prompt)
+        answer = self.query_gpt_api(messages=[initial_prompt])
 
         answer_json = self.formulate_db_message(
             user_id = chatId, 
