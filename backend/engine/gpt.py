@@ -38,12 +38,12 @@ class GPTClient:
             CONFIG = json.load(config)
         return CONFIG["openai_api_key"]
 
-    def formulate_db_message(user_id: int, user_name: str, origin: str, text: str, date: datetime):
+    def formulate_db_message(user_id: int, user_name: str, origin: str, text: str):
         message = {
             "user": {"id": user_id, "name": user_name},
             'origin': origin,
             "text": text,
-            "createdAt": date,
+            "createdAt": datetime.now(),
         }
         return message
 
@@ -141,8 +141,7 @@ class GPTClient:
             user_id = chatId, 
             user_name = 'teaching assistant', 
             origin = 'system', 
-            text = answer, 
-            date = datetime.now()
+            text = answer 
         )
 
         chat = {
