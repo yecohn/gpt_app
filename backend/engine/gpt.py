@@ -159,6 +159,8 @@ class GPTClient:
     # From topic router
     def trigger_topic(self, chatId: int, topic_id: int) -> None:  
         
+        print('triggering topic')
+
         topic_prompt = self.metadata["topic_prompt_template"].copy()
         transcript = self.db_connector.find(
             query={"topic_id": topic_id}, 
@@ -173,7 +175,7 @@ class GPTClient:
             user_id = chatId, 
             user_name = 'system', 
             origin = 'system', 
-            text = topic_prompt, 
+            text = str(topic_prompt), 
         )
         answer_json = self.formulate_db_message(
             user_id = chatId, 
@@ -181,6 +183,7 @@ class GPTClient:
             origin = 'assistant', 
             text = answer, 
         )
+        print(answer)
         self.db_connector.update_one(
             query={"chat_id": chatId},
             setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
