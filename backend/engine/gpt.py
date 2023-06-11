@@ -136,7 +136,8 @@ class GPTClient:
 
         initial_prompt = self.formulate_message(role="user", content=str(initial_prompt))
         answer = self.query_gpt_api(messages=[initial_prompt])
-
+        print(chatId)
+        print(answer)
         answer_json = self.formulate_db_message(
             user_id = chatId, 
             user_name = 'teaching assistant', 
