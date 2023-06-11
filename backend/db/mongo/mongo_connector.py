@@ -19,28 +19,33 @@ class MongoConnector:
         return secret
 
     def insert_one(self, data, collection_name):
-        self.db[collection_name].insert_one(data)
+        collection = self.db[collection_name]
+        collection.insert_one(data)
 
     def delete_one(self, data, collection_name):
-        self.db[collection_name].delete_one(data)
+        collection = self.db[collection_name]
+        collection.delete_one(data)
 
-    def update(self, query, setter, collection_name):
-        self.db[collection_name].update_one(query, setter)
+    def update_one(self, query, setter, collection_name):
+        collection = self.db[collection_name]
+        collection.update_one(query, setter)
 
-    def find(self, query, collection_name):
-        result = self.db[f"{collection_name}"].find_one(query)
-        return result
+    def find(self, query, collection_name, projection = None):
+        collection = self.db[collection_name]
+        return collection.find_one(query)
     
-    def find_all_but(self, collection_name, projection):
-        result = self.db[f"{collection_name}"].find({}, projection)
-        return result
+    def find_all(self, collection_name):
+        collection = self.db[collection_name]
+        return collection.find()
+    
+    # def find_all_but(self, collection_name, projection):
+    #     result = self.db[f"{collection_name}"].find({}, projection)
+    #     return result
 
-    def push(self, collection_name, query, setter):
-        self.db[collection_name].update_one(query, setter)
+    # def push(self, collection_name, query, setter):
+    #     self.db[collection_name].update_one(query, setter)
 
-    def find_all(self, query, collection_name):
-        result = self.db[f"{collection_name}"].find(query)
-        return result
+
 
 
 def access_mongo():
@@ -53,10 +58,3 @@ def access_mongo():
 
 if __name__ == "__main__":
     db = MongoConnector("speakit")
-    # db.push({"test": "test"})
-    # db.find(collection_name="chats", query={"user_id": 1})
-    # print(db.find(collection_name="topics", query={"topic_id": 1}))
-    # print(db.find_all_but(collection_name="topics", projection = {"transcript": 0}))
-    # print(db.find({"test": "test"}))
-    # db.delete({"test": "test"})
-    # db.update({"test": "test"}, {"test": "test2"})

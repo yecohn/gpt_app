@@ -1,134 +1,34 @@
-
-from fastapi import APIRouter, Depends, WebSocket
-from fastapi import Depends
-from backend.db.sql.sql_connector import access_sql
-from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
+from fastapi import APIRouter
 from backend.engine.gpt import GPTClient
-from backend.engine.speech_to_text import STT
-from backend.engine.text_to_speech import GCPTTS
-from backend.app.users.user import UserInfo
-import openai
-from google.cloud import speech
 from backend.app.models import MessageChat
-from datetime import datetime
-import json
 
-
-
-tts = GCPTTS(language="fr-FR", speaker="fr-FR-Wavenet-A")
-client = speech.SpeechClient()
-freq = 44100
-duration = 5
-config = speech.RecognitionConfig(
-    encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-    audio_channel_count=1,
-    language_code="fr-FR",
-)
-
-recording_path = "./data/tmp.wav"
-recording_path_video = "./data/tmp.webm"
-recording_input_path = "./data/input.wav"
-stt = STT(
-    stt_client=client,
-    stt_service=speech.RecognitionAudio,
-    stt_config=config,
-    freq=freq,
-    duration=duration,
-    recording_path=recording_path,
-)
 
 router = APIRouter()
+gpt = GPTClient()
 
-def formulate_message(user_id: int, user_name: str, origin: str, text: str, date: datetime):
-    message = {
-        "user": {"id": user_id, "name": user_name},
-        'origin': origin,
-        "text": text,
-        "createdAt": date,
-    }
-    return message
-
-####### Implement this chat with websocket architecture ##############################
 @router.get("/chat/{id}", status_code=200)
-async def load_chat(
-    id: int,
-    mongo_db: MongoConnector = Depends(access_mongo),
-):
-    """load chat from database
+async def load_chat(id: int):
 
-    Args:
-        id (int): id of user
-
-    Returns:
-        _type_: _description_
-    """
-    # chat = mongo_db.find(collection_name="chat", query={"user_id": id})
-    chat = mongo_db.db["chats"].find_one({"user_id": id})
+    chat = gpt.load_chat(chatId = id)
     res = {"messages": chat["messages"], "user_id": id}
     return res
 
 
 @router.post("/chat/{id}/post", status_code=200)
-async def answer(
-    messagechat: MessageChat,
-    id: int,
-    mongo_db: MongoConnector = Depends(access_mongo),
-    sql_db=Depends(access_sql),
-):
-    
-    usr = UserInfo(userid=messagechat.user.id, db_connector=sql_db)
-    gpt = GPTClient(user=usr, db_connector=mongo_db)
-    openai.api_key = gpt.api_key
-    print(id, messagechat)
-    chat = mongo_db.db['chats'].find_one({"user_id": id})
-    initial_prompt = chat['initial_prompt']
-    messages = chat["messages"]
-    question = messagechat.text
-    answer = gpt.ask_gpt(initial_prompt, question)
+async def answer(messagechat: MessageChat, id: int):
 
-    question_json = formulate_message(messagechat.user.id, usr.username, 'user', question, messagechat.createdAt)
-    answer_json = formulate_message(messagechat.user.id, 'ai', 'system', answer, messagechat.createdAt)
-
-
-    mongo_db.push(
-        collection_name="chats",
-        query={"user_id": messagechat.user.id},
-        setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
-    )
-    return {"ok": True}
+    chatId = id
+    gpt.answer(chatId = chatId, user_prompt = messagechat.text)
+    res = {"message": "message posted", "success": True}
+    return res
 
 
 
 @router.get("/chat/{id}/reset", status_code=200)
-async def reset_chat(
-    id: int,
-    mongo_db: MongoConnector = Depends(access_mongo),
-    sql_db=Depends(access_sql),
-):
-
-    user_id = id
-    usr = UserInfo(userid=user_id, db_connector=sql_db)
-    gpt = GPTClient(user=usr, db_connector=mongo_db)       
-    
-    openai.api_key = gpt.api_key
-    
-    # find messages of chat in mongo db and update to empty messages
-
-
-    initial_prompt = mongo_db.find(
-        query={'chat_id': id},
-        collection_name='chats',
-    )['initial_prompt']
-    
-    answer = gpt.ask_gpt(initial_prompt)
-    answer_json = formulate_message(id, 'ai', 'system', answer, datetime.now())
-
-    mongo_db.push(
-        collection_name='chats',
-        query={'chat_id': id},
-        setter={"$set": {'messages': answer_json}},
-    )
-    res = {'message': 'messages deleted and new chat started', 'success': True}
+async def reset_chat(id: int):
+    chatId = id
+    gpt.reset_chat(chatId = chatId)
+    res = {"message": "chat reset", "success": True}
     return res
 
 
@@ -183,64 +83,87 @@ async def reset_chat(
 #     _ = tts.generate_speech(answer)
 #     return {"answer": answer, "transcript": transcript}
 
+# tts = GCPTTS(language="fr-FR", speaker="fr-FR-Wavenet-A")
+# client = speech.SpeechClient()
+# freq = 44100
+# duration = 5
+# config = speech.RecognitionConfig(
+#     encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+#     audio_channel_count=1,
+#     language_code="fr-FR",
+# )
+
+# recording_path = "./data/tmp.wav"
+# recording_path_video = "./data/tmp.webm"
+# recording_input_path = "./data/input.wav"
+# stt = STT(
+#     stt_client=client,
+#     stt_service=speech.RecognitionAudio,
+#     stt_config=config,
+#     freq=freq,
+#     duration=duration,
+#     recording_path=recording_path,
+# )
+
+
 
 ##############################################################################
-from fastapi import WebSocket
-from fastapi.responses import HTMLResponse
+# from fastapi import WebSocket
+# from fastapi.responses import HTMLResponse
 
 
-html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>WebSocket Chat</h1>
-        <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button>Send</button>
-        </form>
-        <ul id='messages'>
-        </ul>
-        <script>
-            var ws = new WebSocket("ws://localhost:8000/ws");
-            ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
-            };
-            function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
-            }
-        </script>
-    </body>
-</html>
-"""
+# html = """
+# <!DOCTYPE html>
+# <html>
+#     <head>
+#         <title>Chat</title>
+#     </head>
+#     <body>
+#         <h1>WebSocket Chat</h1>
+#         <form action="" onsubmit="sendMessage(event)">
+#             <input type="text" id="messageText" autocomplete="off"/>
+#             <button>Send</button>
+#         </form>
+#         <ul id='messages'>
+#         </ul>
+#         <script>
+#             var ws = new WebSocket("ws://localhost:8000/ws");
+#             ws.onmessage = function(event) {
+#                 var messages = document.getElementById('messages')
+#                 var message = document.createElement('li')
+#                 var content = document.createTextNode(event.data)
+#                 message.appendChild(content)
+#                 messages.appendChild(message)
+#             };
+#             function sendMessage(event) {
+#                 var input = document.getElementById("messageText")
+#                 ws.send(input.value)
+#                 input.value = ''
+#                 event.preventDefault()
+#             }
+#         </script>
+#     </body>
+# </html>
+# """
 
 
-@router.get("/")
-async def get():
-    return HTMLResponse(html)
+# @router.get("/")
+# async def get():
+#     return HTMLResponse(html)
 
 
-@router.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    data = "hello I am a grut "
-    while True:
-        recieve = await websocket.receive_text()
-        print(recieve)
-        message = {
-            "user": {"id": 1, "name": "AI"},
-            "origin": "system",
-            "text": data,
-            "createdAt": datetime.now(),
-        }
-        j = json.dumps(message, default=str)
-        await websocket.send_text(j)
+# @router.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     await websocket.accept()
+#     data = "hello I am a grut "
+#     while True:
+#         recieve = await websocket.receive_text()
+#         print(recieve)
+#         message = {
+#             "user": {"id": 1, "name": "AI"},
+#             "origin": "system",
+#             "text": data,
+#             "createdAt": datetime.now(),
+#         }
+#         j = json.dumps(message, default=str)
+#         await websocket.send_text(j)

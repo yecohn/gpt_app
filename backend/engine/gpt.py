@@ -1,20 +1,19 @@
 import json
 import openai
-from typing import Dict, List
+from typing import List
 from backend.app.users.user import UserInfo
-from backend.db.mongo.mongo_connector import MongoConnector
+from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.utils.decorators import timeit
-from backend.db.sql.sql_connector import SQLConnector
+from backend.db.sql.sql_connector import SQLConnector, access_sql
+from fastapi import Depends
+from datetime import datetime
+
+
 
 
 class GPTClient:
-    def __init__(
-        self,
-        user: UserInfo,
-        db_connector: MongoConnector,
-    ):
-        self.user = user
-        self.db_connector = db_connector
+    def __init__(self):
+        self.db_connector : MongoConnector = Depends(access_mongo)
 
     @property
     def metadata(self):
@@ -32,39 +31,39 @@ class GPTClient:
     def _level(self):
         return self.db_connector.find({}, "levels")["gpt"]
 
+    @property
+    def api_key(self):
+        return self._api_key()
+    
     def _api_key(self, config_file="./config/config.json"):
         with open(config_file, "r") as config:
             CONFIG = json.load(config)
         return CONFIG["openai_api_key"]
 
-    @property
-    def api_key(self):
-        return self._api_key()
+    def formulate_db_message(user_id: int, user_name: str, origin: str, text: str, date: datetime):
+        message = {
+            "user": {"id": user_id, "name": user_name},
+            'origin': origin,
+            "text": text,
+            "createdAt": date,
+        }
+        return message
 
-    def formulate_message(self, role: str, content: str) -> Dict:
+    def get_username(self, chatId: int) -> str:
+        user = UserInfo(userid=chatId)
+        return user.username
+
+    def formulate_message(self, role: str, content: str) -> dict:
         return {"role": role, "content": content}
 
-    def retrieve_chat(self) -> List[Dict]:
-        """
-        Reads the chat json file and returns a json message  that is taken into argument by the model
-        Returns: List[Dict]: List of messages to be processed by gpt api
-        """
-
-        def replace_role(role: str) -> str:
-            if role == "ai":
-                return "system"
-            elif isinstance(role, str):
-                return "user"
-
-        chat = self.db_connector.find({"user_id": self.user.id}, "chats")
-        messages = chat["messages"]
-        messages_gpt = [
-            {"role": replace_role(m["user"]["name"]), "content": m["text"]}
+    def formulate_messages(self, messages: List[dict]) -> List[dict]:
+        formatted_messages = [
+            self.formulate_message(role=m['user']['name'], content=m['text']) 
             for m in messages
         ]
-        return messages_gpt
+        return formatted_messages
 
-    def query_gpt(self, messages: List[Dict]) -> dict:
+    def query_gpt_api(self, messages: List[dict]) -> dict:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
@@ -73,24 +72,68 @@ class GPTClient:
             # logit_bias = json file - Modify the likelihood of specified tokens appearing in the completion.
         )
         return response["choices"][0]["message"]["content"]
-
-    def start_new_chat(self, initial_prompt) -> dict:
-        messages = self.formulate_message(role="user", content=initial_prompt)
-        return self.query_gpt([messages])
     
-    @timeit
-    def ask_gpt(self, initial_prompt, prompt = None) -> dict:            
-        
-        chat = self.retrieve_chat()
-        
-        inital_prompt = self.formulate_message(role="user", content=str(initial_prompt))
-        chat.insert(0, inital_prompt)
-        if(prompt):
-            prompt = self.formulate_message(role="user", content=str(prompt))
-            chat.append(prompt)
+    # From chat router
+    def load_chat(self, chatId: int) -> dict:
+        return self.db_connector.find(query = {"chat_id": chatId}, collection = "chats")
 
-        self.answer = self.query_gpt(chat)
-        return self.answer
+    def answer(self, chatId: int, user_prompt: str) -> None:
+        chat = self.load_chat(chatId = chatId)
+        
+        chat_messages = self.formulate_messages(chat["messages"])
+        
+        initial_prompt = self.formulate_message(role="user", content=str(chat["initial_prompt"]))
+        chat_messages.insert(0, initial_prompt)
+        
+        prompt = self.formulate_message(role="user", content=str(prompt))
+        chat_messages.append(prompt)
+
+        answer = self.query_gpt_api(messages=chat_messages)
+        question_json = self.formulate_db_message(
+            user_id = chatId, 
+            user_name = self.get_username(chatId), 
+            origin = "user", 
+            text = user_prompt, 
+            date = datetime.now()
+        )
+        answer_json = self.formulate_db_message(
+            user_id = chatId, 
+            user_name = 'teaching assistant', 
+            origin = 'system', 
+            text = answer, 
+            date = datetime.now()
+        )
+        self.db_connector.update_one(
+            query={"chat_id": chatId},
+            setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
+            collection_name="chats",
+        )
+
+    def reset_chat(self, chatId: int) -> None:
+        chat = self.load_chat(chatId = chatId)
+        
+        initial_prompt = self.formulate_message(role="user", content=str(chat["initial_prompt"]))
+        answer = self.query_gpt_api(messages=initial_prompt)
+
+        answer_json = self.formulate_db_message(
+            user_id = chatId, 
+            user_name = 'teaching assistant', 
+            origin = 'system', 
+            text = answer, 
+            date = datetime.now()
+        )
+        self.db_connector.update_one(
+            query={"chat_id": chatId},
+            setter={"$set": {"messages": [answer_json]}},
+            collection_name="chats",
+        )
+
+
+
+    # def start_new_chat(self, initial_prompt) -> dict:
+    #     messages = self.formulate_message(role="user", content=initial_prompt)
+    #     return self.query_gpt_api([messages])
+
 
     # def create_lesson(self, lesson_prompt) -> dict:
     #     messages = self.retrieve_chat()

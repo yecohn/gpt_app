@@ -1,11 +1,14 @@
-from backend.db.sql.sql_connector import SQLConnector
+from backend.db.sql.sql_connector import SQLConnector, access_sql
 from backend.db.sql.tables import User
-
+from fastapi import Depends
 
 class UserInfo:
-    def __init__(self, userid: str, db_connector: SQLConnector) -> None:
+    def __init__(
+        self, 
+        userid: str, 
+    ):
         self.userid = userid
-        self.db_connector = db_connector
+        self.db_connector: SQLConnector = Depends(access_sql)
         self.retrieve_personal_info()
         # in python class are camelCase: MyClass and functions are snake_case: my_function
 
