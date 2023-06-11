@@ -3,17 +3,15 @@ from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.engine.gpt import GPTClient
 
 router = APIRouter()
+gpt = GPTClient()
 
 
-@router.get('/lesson/', status_code=200)
-async def topic_list(
-    mongo_db: MongoConnector = Depends(access_mongo),
+@router.get('/chat/{user_id}/lesson', status_code=200)
+async def generate_lesson(
+    user_id: int,
 ):
-    gpt = GPTClient()
-    lesson_prompt = mongo_db.find({}, "metadata")["GPT_metadata"]["lesson_prompt_template"]
-    initial_prompt = mongo_db.db['Chats'].find_one({"user_id": messagechat.user.id})['initial_prompt']
 
-    lesson = gpt.ask_gpt(initial_prompt, lesson_prompt)
+    lesson = gpt.generate_lesson(chatId=user_id)
     
     res = lesson
-    return res
+    return {"lesson": res, "success": True}

@@ -159,7 +159,6 @@ class GPTClient:
     # From topic router
     def trigger_topic(self, chatId: int, topic_id: int) -> None:  
         
-        print('triggering topic')
 
         topic_prompt = self.metadata["topic_prompt_template"].copy()
         transcript = self.db_connector.find(
@@ -183,14 +182,17 @@ class GPTClient:
             origin = 'assistant', 
             text = answer, 
         )
-        print(answer)
         self.db_connector.update_one(
             query={"chat_id": chatId},
             setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
             collection_name="chats",
         )
 
-
+    def generate_lesson(self, chatId: int) -> str:
+        lesson_prompt = self.metadata["lesson_prompt_template"].copy()
+        chat_messages = self.concatenate_chat(chatId = chatId, prompt = str(lesson_prompt), prompt_role='system')
+        answer = self.query_gpt_api(messages=chat_messages)
+        return answer
 
 if __name__ == "__main__":
     gpt = GPTClient()

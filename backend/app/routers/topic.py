@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
 from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
 from backend.engine.gpt import GPTClient
-import openai
-from datetime import datetime
+
 
 router = APIRouter()
 gpt = GPTClient()
