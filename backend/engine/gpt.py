@@ -20,7 +20,6 @@ class GPTClient:
 
     def _metadata(self):
         _metadata = self.db_connector.find({}, "metadata")["GPT_metadata"]
-        print(_metadata)
         return _metadata
 
     @property
@@ -135,7 +134,7 @@ class GPTClient:
         initial_prompt['user']['level'] = 'Beginner'
         initial_prompt['parameters']['level'] = 'Beginner'
 
-        initial_prompt = self.formulate_message(role="user", content=str("initial_prompt"))
+        initial_prompt = self.formulate_message(role="user", content=str(initial_prompt))
         answer = self.query_gpt_api(messages=initial_prompt)
 
         answer_json = self.formulate_db_message(
@@ -175,12 +174,8 @@ class GPTClient:
 
 if __name__ == "__main__":
     sql_connector = SQLConnector()
-    user1 = User("Meir", sql_connector)
-    gpt = GPTClient(
-        user=user1,
-    )
+    gpt = GPTClient()
     openai.api_key = gpt.api_key
-    gpt.reinitialize_chat()
 
 
 
