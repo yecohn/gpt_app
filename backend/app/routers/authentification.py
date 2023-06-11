@@ -63,7 +63,7 @@ async def signup(inf: Userinf):
     """
     
     user_id = UserInfo.add_new_user(inf=inf)
-
+    print(user_id)
     gpt = GPTClient()
 
     gpt.initialize_new_chat(chatId=user_id, inf=inf)
