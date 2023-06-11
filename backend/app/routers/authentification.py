@@ -1,13 +1,8 @@
 from fastapi import APIRouter, Depends
-from backend.db.sql.sql_connector import access_sql
-from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
-from backend.db.sql.tables import User
 from backend.app.models import *
-from backend.app.users.hashing import Hash
 from .token import *
 from fastapi.security import OAuth2PasswordRequestForm
 from backend.engine.gpt import GPTClient
-import openai
 from datetime import datetime
 from backend.app.users.user import UserInfo
 
@@ -23,7 +18,7 @@ def formulate_message(user_id: int, user_name: str, origin: str, text: str, date
     return message
 
 @router.post("/login")
-async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_sql)):
+async def login(info: OAuth2PasswordRequestForm = Depends()):
     """retreive user from database
 
     Args:
@@ -56,11 +51,7 @@ async def login(info: OAuth2PasswordRequestForm = Depends(), db=Depends(access_s
 
 
 @router.post("/register", status_code=200)
-async def signup(
-    inf: Userinf, 
-    sql_db=Depends(access_sql), 
-    mongo_db: MongoConnector = Depends(access_mongo)
-    ):
+async def signup(inf: Userinf):
     """_summary_
 
     Args:

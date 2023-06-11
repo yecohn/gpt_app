@@ -1,11 +1,10 @@
 from backend.db.sql.sql_connector import SQLConnector, access_sql
 from backend.db.sql.tables import User
-from fastapi import Depends
 from backend.app.users.hashing import Hash
 from backend.app.models import Userinf
 
 class UserInfo:
-    db_connector: SQLConnector = Depends(access_sql)
+    db_connector = access_sql()
     
     def __init__(
         self, 
