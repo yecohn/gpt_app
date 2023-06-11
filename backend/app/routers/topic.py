@@ -8,7 +8,7 @@ router = APIRouter()
 gpt = GPTClient()
 
 
-@router.get("/topics/{chat_id}", status_code=200)
+@router.get("/topics", status_code=200)
 async def topic_list(
     mongo_db: MongoConnector = Depends(access_mongo),
 ):
