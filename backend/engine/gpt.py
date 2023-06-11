@@ -98,7 +98,6 @@ class GPTClient:
             user_name = 'teaching assistant', 
             origin = 'system', 
             text = answer, 
-            date = datetime.now()
         )
         self.db_connector.update_one(
             query={"chat_id": chatId},
