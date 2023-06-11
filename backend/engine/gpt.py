@@ -56,7 +56,7 @@ class GPTClient:
 
     def formulate_messages(self, messages: List[dict]) -> List[dict]:
         formatted_messages = [
-            self.formulate_message(role=m['user']['name'], content=m['text']) 
+            self.formulate_message(role=m['origin'], content=m['text']) 
             for m in messages
         ]
         return formatted_messages
