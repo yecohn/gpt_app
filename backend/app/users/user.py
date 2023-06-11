@@ -14,12 +14,13 @@ class UserInfo:
         self.retrieve_personal_info()
         # in python class are camelCase: MyClass and functions are snake_case: my_function
 
-    def retrieve_user_info_based_on_username(self, username: str):
-        return UserInfo.db_connector.query(User, query= {User.username == username})
+    @classmethod
+    def retrieve_user_info_based_on_username(cls, username: str):
+        return cls.db_connector.query(User, query= {User.username == username})
         
 
     def retrieve_personal_info(self):
-        user = UserInfo.db_connector.query(User, User.id == self.userid)
+        user = self.db_connector.query(User, User.id == self.userid)
         [setattr(self, k, v) for k, v in user.__dict__.items()]
 
     def update_personal_info(self, attr, val):
