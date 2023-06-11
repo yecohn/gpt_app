@@ -71,32 +71,38 @@ class GPTClient:
         )
         return response["choices"][0]["message"]["content"]
     
+    def concatenate_chat(self, chatId: int, prompt: str, prompt_role: str = None) -> None:
+        chat = self.load_chat(chatId = chatId)
+        
+        chat_messages = self.formulate_messages(chat["messages"])
+        
+        initial_prompt = self.formulate_message(role="system", content=str(chat["initial_prompt"]))
+        chat_messages.insert(0, initial_prompt)
+        if prompt_role:
+            prompt = self.formulate_message(role=prompt_role, content=str(prompt))
+        else:
+            prompt = self.formulate_message(role="user", content=str(prompt))
+        chat_messages.append(prompt)
+        return chat_messages
+    
     # From chat router
     def load_chat(self, chatId: int) -> dict:
         return self.db_connector.find(query = {"chat_id": chatId}, collection_name = "chats")
 
     def answer(self, chatId: int, user_prompt: str) -> None:
-        chat = self.load_chat(chatId = chatId)
-        
-        chat_messages = self.formulate_messages(chat["messages"])
-        
-        initial_prompt = self.formulate_message(role="user", content=str(chat["initial_prompt"]))
-        chat_messages.insert(0, initial_prompt)
-        
-        prompt = self.formulate_message(role="user", content=str(user_prompt))
-        chat_messages.append(prompt)
 
+        chat_messages = self.concatenate_chat(chatId = chatId, prompt = user_prompt)
         answer = self.query_gpt_api(messages=chat_messages)
         question_json = self.formulate_db_message(
             user_id = chatId, 
             user_name = self.get_username(chatId), 
-            origin = "user", 
+            origin = 'user', 
             text = user_prompt, 
         )
         answer_json = self.formulate_db_message(
             user_id = chatId, 
             user_name = 'teaching assistant', 
-            origin = 'system', 
+            origin = 'assistant', 
             text = answer, 
         )
         self.db_connector.update_one(
@@ -108,13 +114,13 @@ class GPTClient:
     def reset_chat(self, chatId: int) -> None:
         chat = self.load_chat(chatId = chatId)
         
-        initial_prompt = self.formulate_message(role="user", content=str(chat["initial_prompt"]))
+        initial_prompt = self.formulate_message(role="system", content=str(chat["initial_prompt"]))
         answer = self.query_gpt_api(messages=[initial_prompt])
 
         answer_json = self.formulate_db_message(
             user_id = chatId, 
             user_name = 'teaching assistant', 
-            origin = 'system', 
+            origin = 'assistant', 
             text = answer, 
         )
         self.db_connector.update_one(
@@ -123,6 +129,7 @@ class GPTClient:
             collection_name="chats",
         )
 
+    # From authentification router
     def initialize_new_chat(self, chatId: int, inf: Userinf) -> None:
         initial_prompt = self.metadata["initial_prompt_template"].copy()
         initial_prompt['native_language'] = inf.nativeLanguage
@@ -131,14 +138,13 @@ class GPTClient:
         initial_prompt['user']['level'] = 'Beginner'
         initial_prompt['parameters']['level'] = 'Beginner'
 
-        initial_prompt = self.formulate_message(role="user", content=str(initial_prompt))
+        initial_prompt = self.formulate_message(role='system', content=str(initial_prompt))
         answer = self.query_gpt_api(messages=[initial_prompt])
-        print(chatId)
-        print(answer)
+
         answer_json = self.formulate_db_message(
             user_id = chatId, 
             user_name = 'teaching assistant', 
-            origin = 'system', 
+            origin = 'assistant', 
             text = answer 
         )
 
@@ -150,76 +156,39 @@ class GPTClient:
         }
         self.db_connector.insert_one(chat, "chats")
 
+    # From topic router
+    def trigger_topic(self, chatId: int, topic_id: int) -> None:  
+        
+        topic_prompt = self.metadata["topic_prompt_template"].copy()
+        transcript = self.db_connector.find(
+            query={"topic_id": topic_id}, 
+            collection_name="topics",
+        )['transcript']
+        topic_prompt['video_summary'] = transcript
 
-    # def start_new_chat(self, initial_prompt) -> dict:
-    #     messages = self.formulate_message(role="user", content=initial_prompt)
-    #     return self.query_gpt_api([messages])
+        chat_messages = self.concatenate_chat(chatId = chatId, prompt = str(topic_prompt), prompt_role='system')
 
+        answer = self.query_gpt_api(messages=chat_messages)
+        question_json = self.formulate_db_message(
+            user_id = chatId, 
+            user_name = 'system', 
+            origin = 'system', 
+            text = topic_prompt, 
+        )
+        answer_json = self.formulate_db_message(
+            user_id = chatId, 
+            user_name = 'teaching assistant', 
+            origin = 'assistant', 
+            text = answer, 
+        )
+        self.db_connector.update_one(
+            query={"chat_id": chatId},
+            setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
+            collection_name="chats",
+        )
 
-    # def create_lesson(self, lesson_prompt) -> dict:
-    #     messages = self.retrieve_chat()
-    #     question = self.formulate_message(role="user", content=lesson_prompt)
-    #     messages += [question]
-    #     return self.query_gpt(messages)
-
-    # def discuss_topic(self, topic_prompt) -> dict:
-    #     messages = self.retrieve_chat()
-    #     question = self.formulate_message(role="user", content=topic_prompt)
-    #     messages += [question]
-    #     return self.query_gpt(messages)
 
 
 if __name__ == "__main__":
-    sql_connector = SQLConnector()
     gpt = GPTClient()
     openai.api_key = gpt.api_key
-
-
-
-    # def reinitialize_chat(self) -> None:
-    #     """
-    #     Re initialize the chat file by deleting it if there is already a
-    #     conversation inside or by creating it if it does not exist
-    #     """
-    #     if self.user.previous_chats:
-    #         self.user.previous_chats = None
-    #         self.db_connector.update(
-    #             {"username": self.user.username},
-    #             {"previous_chat": self.user.previous_chats},
-    #             "users",
-    #         )
-    #     initial_prompt = self.initial_prompt
-    #     self.store_chat(role="user", content=initial_prompt)
-
-    # @property
-    # def question(self) -> str:
-    #     """load question from input file"""
-    #     with open(self.metatadata.get("input_file"), "r") as f:
-    #         question = f.read()
-    #     return question
-
-    # @question.setter
-    # def question(self, question):
-    #     with open(self.metadata.get("input_file"), "w") as f:
-    #         f.write(question)
-
-    # @property
-    # def answer(self) -> str:
-    #     with open(self.metadata.get("output_file"), "r") as f:
-    #         answer = f.read()
-    #     return answer
-
-    # @answer.setter
-    # def answer(self, answer):
-    #     with open(self.metadata.get("output_file"), "w") as f:
-    #         f.write(answer)
-
-
-    # def start_chat(self) -> None:
-    #     """start conversation by submitting first question to gpt"""
-    #     self.ask_gpt(question="")
-
-    # def save_answer(self, answer: str) -> None:
-    #     """save answer to file for later use"""
-    #     with open(self.output_file, "w") as f:
-    #         f.write(answer)
