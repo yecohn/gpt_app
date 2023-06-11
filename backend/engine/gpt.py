@@ -12,6 +12,7 @@ from backend.app.models import Userinf
 class GPTClient:
     def __init__(self):
         self.db_connector = MongoConnector('speakit')
+        openai.api_key = self.api_key
 
     @property
     def metadata(self):
