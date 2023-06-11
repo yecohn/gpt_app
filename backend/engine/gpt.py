@@ -73,7 +73,7 @@ class GPTClient:
     
     # From chat router
     def load_chat(self, chatId: int) -> dict:
-        return self.db_connector.find(query = {"chat_id": chatId}, collection = "chats")
+        return self.db_connector.find(query = {"chat_id": chatId}, collection_name = "chats")
 
     def answer(self, chatId: int, user_prompt: str) -> None:
         chat = self.load_chat(chatId = chatId)
