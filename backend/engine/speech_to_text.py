@@ -1,8 +1,7 @@
-import whisper
+import openai
 from fastapi import UploadFile
 
 class STT:
-    model = whisper.load_model("base")
     def __init__(self) -> None:
         self._uploaded_audio = None
 
@@ -15,9 +14,8 @@ class STT:
         self._uploaded_audio = audio_file
         
     @classmethod
-    def transcript(cls, audio_path: str) -> str:
-        audio_file = open(audio_path, 'rb')
-        trancription = cls.model.transcribe(audio_file)
+    def transcript(cls, uploaded_audio: UploadFile) -> str:
+        trancription = openai.Audio.transcribe(uploaded_audio)
         return trancription['text']
 
 

@@ -1,8 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from googletrans import Translator
-# from google_trans_new import google_translator
 from backend.app.models import TranslationInfo
-import json
 
 router = APIRouter()
 # translator = google_translator()

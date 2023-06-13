@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends
-from backend.db.mongo.mongo_connector import access_mongo, MongoConnector
+from fastapi import APIRouter
 from backend.engine.gpt import GPTClient
 
 router = APIRouter()

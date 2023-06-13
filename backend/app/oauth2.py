@@ -1,5 +1,4 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import SecurityScopes
 from fastapi.security import OAuth2PasswordBearer
 from ..app.routers.token import verify_token
 
