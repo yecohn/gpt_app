@@ -37,7 +37,7 @@ class TokenData(BaseModel):
 
 
 class Usr(BaseModel):
-    id: int
+    id: str
     username: str
 
 

@@ -15,7 +15,7 @@ async def load_chat(id: str):
 
 
 @router.post("/chat/{id}/post", status_code=200)
-async def answer(messagechat: MessageChat, id: str):
+async def answer(id: str, messagechat: MessageChat):
 
     chatId = id
     gpt.answer(chatId = chatId, user_prompt = messagechat.text)
