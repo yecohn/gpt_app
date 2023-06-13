@@ -38,8 +38,8 @@ async def topic_list(
     return res
 
 
-@router.get("/chat/{user_id}/topics/{topic_id}", status_code=200)
-async def triggerTopic(user_id: int, topic_id: int):
+@router.get("/chat/{chatId}/topics/{topic_id}", status_code=200)
+async def triggerTopic(chatId: str, topic_id: int):
     
-    gpt.trigger_topic(chatId=user_id, topic_id=topic_id)
+    gpt.trigger_topic(chatId=chatId, topic_id=topic_id)
     return {"message": "topic triggered", "success": True}

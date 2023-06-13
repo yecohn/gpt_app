@@ -7,7 +7,7 @@ router = APIRouter()
 gpt = GPTClient()
 
 @router.get("/chat/{id}", status_code=200)
-async def load_chat(id: int):
+async def load_chat(id: str):
 
     chat = gpt.load_chat(chatId = id)
     res = {"messages": chat["messages"], "user_id": id}
@@ -15,7 +15,7 @@ async def load_chat(id: int):
 
 
 @router.post("/chat/{id}/post", status_code=200)
-async def answer(messagechat: MessageChat, id: int):
+async def answer(messagechat: MessageChat, id: str):
 
     chatId = id
     gpt.answer(chatId = chatId, user_prompt = messagechat.text)
@@ -25,7 +25,7 @@ async def answer(messagechat: MessageChat, id: int):
 
 
 @router.get("/chat/{id}/reset", status_code=200)
-async def reset_chat(id: int):
+async def reset_chat(id: str):
     chatId = id
     gpt.reset_chat(chatId = chatId)
     res = {"message": "chat reset", "success": True}

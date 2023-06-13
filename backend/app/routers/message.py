@@ -8,7 +8,7 @@ router = APIRouter()
 # translator = google_translator()
 translator = Translator()
 
-@router.post("/chat/{user_id}/message/translate", status_code=200)
+@router.post("/chat/{chatId}/message/translate", status_code=200)
 async def translate(
     info: TranslationInfo,
 ):

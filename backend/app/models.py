@@ -9,11 +9,11 @@ class Login(BaseModel):
 
 class Userinf(BaseModel):
     username: str
-    email: str
+    # email: str
     password: str
-    level: str
-    nativeLanguage: str
-    targetLanguage: str
+    # level: str
+    native: str
+    target: str
 
 
 class Logininf(BaseModel):

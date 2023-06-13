@@ -6,12 +6,12 @@ router = APIRouter()
 gpt = GPTClient()
 
 
-@router.get('/chat/{user_id}/lesson', status_code=200)
+@router.get('/chat/{chatId}/lesson', status_code=200)
 async def generate_lesson(
-    user_id: int,
+    chatId: str,
 ):
 
-    lesson = gpt.generate_lesson(chatId=user_id)
+    lesson = gpt.generate_lesson(chatId=chatId)
     
     res = lesson
     return {"lesson": res, "success": True}
