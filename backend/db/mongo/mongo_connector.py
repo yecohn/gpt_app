@@ -20,7 +20,9 @@ class MongoConnector:
 
     def insert_one(self, data, collection_name):
         collection = self.db[collection_name]
-        collection.insert_one(data)
+        insertOneResult = collection.insert_one(data)
+        return insertOneResult
+        
 
     def delete_one(self, data, collection_name):
         collection = self.db[collection_name]
