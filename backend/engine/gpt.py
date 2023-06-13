@@ -127,7 +127,7 @@ class GPTClient:
 
     def reset_chat(self, chatId: str) -> None:
         chat = self.load_chat(chatId = chatId)
-        
+        print(chat)
         initial_prompt = self.formulate_message(role="system", content=str(chat["initial_prompt"]))
         answer = self.query_gpt_api(messages=[initial_prompt])
 
@@ -151,8 +151,8 @@ class GPTClient:
         initial_prompt['user']['level'] = 'Beginner'
         initial_prompt['parameters']['level'] = 'Beginner'
 
-        initial_prompt = self.formulate_message(role='system', content=str(initial_prompt))
-        answer = self.query_gpt_api(messages=[initial_prompt])
+        initial_prompt_to_api = self.formulate_message(role='system', content=str(initial_prompt))
+        answer = self.query_gpt_api(messages=[initial_prompt_to_api])
 
         answer_json = self.formulate_db_message(
             user_name = 'teaching assistant', 
