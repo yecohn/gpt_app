@@ -54,6 +54,8 @@ class UserInfo:
             },
             collection_name='users'
         )
+        print(insertion)
+        print(type(insertion))
         user_id = str(insertion.inserted_id)
         
         return user_id
