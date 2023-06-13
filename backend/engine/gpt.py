@@ -90,10 +90,11 @@ class GPTClient:
         return chat_messages
 
     def retrieve_chatId(self, user_id: str) -> str:
-        return self.db_connector.find(
+        chat = self.db_connector.find(
             query = {'user_id': user_id}, 
             collection_name = 'chats'
-            )['_id']
+            )
+        return str(chat['_id'])
     
     # From chat router
     def load_chat(self, chatId: str) -> dict:
