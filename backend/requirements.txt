@@ -9,22 +9,22 @@ openai
 python-multipart
 
 
-sounddevice
-wavio
-google
-google.cloud
-streamlit
-numpy
-pyaudio
-librosa
-scipy
-google-cloud-texttospeech
-google-cloud-speech
-SQLAlchemy==2.0.7
-moviepy
-cloud-sql-python-connector
-bcrypt
-python-jose
-pg8000
-pymysql
-gTTS
+# sounddevice
+# wavio
+# google
+# google.cloud
+# streamlit
+# numpy
+# pyaudio
+# librosa
+# scipy
+# google-cloud-texttospeech
+# google-cloud-speech
+# SQLAlchemy==2.0.7
+# moviepy
+# cloud-sql-python-connector
+# bcrypt
+# python-jose
+# pg8000
+# pymysql
+# gTTS
