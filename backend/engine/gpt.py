@@ -90,6 +90,8 @@ class GPTClient:
         return chat_messages
 
     def retrieve_chatId(self, user_id: str) -> str:
+        print(user_id)
+        print(type(user_id))
         chat = self.db_connector.find(
             query = {'user_id': user_id}, 
             collection_name = 'chats'

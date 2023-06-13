@@ -34,7 +34,8 @@ class MongoConnector:
 
     def find(self, query, collection_name, projection = None):
         collection = self.db[collection_name]
-        return collection.find_one(query)
+        foundObject = collection.find_one(query)
+        return foundObject
     
     def find_all(self, collection_name):
         collection = self.db[collection_name]
