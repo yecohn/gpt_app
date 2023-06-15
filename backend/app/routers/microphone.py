@@ -1,6 +1,8 @@
 from fastapi import APIRouter, UploadFile, File
 from backend.engine.speech_to_text import STT
 from backend.engine.gpt import GPTClient
+import tempfile
+import os
 
 
 router = APIRouter()
@@ -8,23 +10,22 @@ stt = STT()
 gpt = GPTClient()
 
 @router.post("/chat/{chatId}/microphone")
-async def upload_audio_file(chatId: str, file: UploadFile = File(...)):
+async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): #  = File(...)
     # Process the audio file here
     # Perform transcription or any other operations
-    print(file.uri)
-    try:
-        contents = file.file.read()
-        with open(file.uri, 'wb') as f:
-            f.write(contents)
-        
-        trancript = stt.transcript(f)
-        gpt.answer(chatId = chatId, user_prompt = trancript)
-    except Exception:
-        return {"message": "There was an error uploading the file"}
-    finally:
-        file.file.close()
+    temp_dir = tempfile.mkdtemp()
+    save_path = os.path.join(temp_dir, 'temp.wav')
+    contents = await audio_data.read()
 
-    return {"message": f"Successfully uploaded {file.filename}"}
+    with open(save_path, 'wb') as f:
+        f.write(contents)
+
+
+    trancript = stt.transcript(f)
+    gpt.answer(chatId = chatId, user_prompt = trancript)
+
+
+    return {"message": f"Successfully uploaded {audio_data.filename}"}
     # try:
     #     with open(f'audio{audio_file.filename}', 'wb') as f:
     #         f.write(await audio_file.read())
