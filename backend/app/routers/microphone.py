@@ -16,6 +16,9 @@ async def upload_audio_file(chatId: str, file: UploadFile = File(...)):
         contents = file.file.read()
         with open(file.filename, 'wb') as f:
             f.write(contents)
+        
+        trancript = stt.transcript(f)
+        gpt.answer(chatId = chatId, user_prompt = trancript)
     except Exception:
         return {"message": "There was an error uploading the file"}
     finally:
