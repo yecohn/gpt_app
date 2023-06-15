@@ -8,20 +8,31 @@ stt = STT()
 gpt = GPTClient()
 
 @router.post("/chat/{chatId}/microphone")
-async def upload_audio_file(chatId: str, audio_file: UploadFile = File(...)):
+async def upload_audio_file(chatId: str, file: UploadFile = File(...)):
     # Process the audio file here
     # Perform transcription or any other operations
+
     try:
-        with open(f'audio{audio_file.filename}', 'wb') as f:
-            f.write(await audio_file.read())
+        contents = file.file.read()
+        with open(file.filename, 'wb') as f:
+            f.write(contents)
+    except Exception:
+        return {"message": "There was an error uploading the file"}
+    finally:
+        file.file.close()
 
-        stt.uploaded_audio = f
-        trancript = stt.transcript(stt.uploaded_audio)
-        gpt.answer(chatId = chatId, user_prompt = trancript)
+    return {"message": f"Successfully uploaded {file.filename}"}
+    # try:
+    #     with open(f'audio{audio_file.filename}', 'wb') as f:
+    #         f.write(await audio_file.read())
+
+    #     stt.uploaded_audio = f
+    #     trancript = stt.transcript(stt.uploaded_audio)
+    #     gpt.answer(chatId = chatId, user_prompt = trancript)
 
 
-    except Exception as e:
-        return {"message": "Failed to save the audio file.", "error": str(e)}
+    # except Exception as e:
+    #     return {"message": "Failed to save the audio file.", "error": str(e)}
 
 
 
