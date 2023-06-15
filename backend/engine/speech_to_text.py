@@ -22,9 +22,11 @@ class STT:
                 response_format="text",
                 language="es"
                 )
-        
+            print(trancription)
+            print(type(trancription))
+            # return trancription
             
-        return trancription['text']
+            
 
 
 # import sounddevice as sd
