@@ -11,10 +11,10 @@ gpt = GPTClient()
 async def upload_audio_file(chatId: str, file: UploadFile = File(...)):
     # Process the audio file here
     # Perform transcription or any other operations
-
+    print(file)
     try:
         contents = file.file.read()
-        with open(file.filename, 'wb') as f:
+        with open(file.uri, 'wb') as f:
             f.write(contents)
         
         trancript = stt.transcript(f)
