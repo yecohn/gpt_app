@@ -127,7 +127,6 @@ class GPTClient:
 
     def reset_chat(self, chatId: str) -> None:
         chat = self.load_chat(chatId = chatId)
-        print(chat)
         initial_prompt = self.formulate_message(role="system", content=str(chat["initial_prompt"]))
         answer = self.query_gpt_api(messages=[initial_prompt])
 
