@@ -21,7 +21,7 @@ async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): # 
         f.write(contents)
 
 
-    trancript = stt.transcript(audio_data)
+    trancript = stt.transcript(save_path)
     gpt.answer(chatId = chatId, user_prompt = trancript)
 
 
