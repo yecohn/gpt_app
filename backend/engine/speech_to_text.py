@@ -14,14 +14,16 @@ class STT:
         self._uploaded_audio = audio_file
         
     @classmethod
-    def transcript(cls, file) -> str:
-        print('Starting speech to text transcription...')
-        trancription = openai.Audio.transcribe(
-            file=file, 
-            model = "whisper-1",
-            response_format="text",
-            language="es"
-            )
+    def transcript(cls, audio_file) -> str:
+        with open(audio_file, "rb") as file:
+            trancription = openai.Audio.transcribe(
+                file=file, 
+                model = "whisper-1",
+                response_format="text",
+                language="es"
+                )
+        
+            
         return trancription['text']
 
 
