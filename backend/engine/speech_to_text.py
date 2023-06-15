@@ -14,9 +14,9 @@ class STT:
         self._uploaded_audio = audio_file
         
     @classmethod
-    def transcript(cls, uploaded_audio: UploadFile) -> str:
+    def transcript(cls, path) -> str:
         print('Starting speech to text transcription...')
-        trancription = openai.Audio.transcribe(uploaded_audio)
+        trancription = openai.Audio.transcribe(path)
         return trancription['text']
 
 
