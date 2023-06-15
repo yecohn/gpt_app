@@ -16,7 +16,11 @@ class STT:
     @classmethod
     def transcript(cls, path) -> str:
         print('Starting speech to text transcription...')
-        trancription = openai.Audio.transcribe(file=path)
+        trancription = openai.Audio.transcribe(
+            file=path, model = "whisper-1",
+            response_format="text",
+            language="es"
+            )
         return trancription['text']
 
 
