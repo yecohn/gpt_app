@@ -6,7 +6,7 @@ from backend.engine.text_to_speech import TTS
 from fastapi.responses import FileResponse
 import tempfile
 import os
-
+import requests
 
 
 
@@ -30,12 +30,25 @@ async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): # 
 
     trancript = stt.transcript(save_path)
     answer = gpt.answer(chatId = chatId, user_prompt = trancript)
-    return tts.generate_speech(answer)
+    audio_answer = tts.generate_speech(answer)
+    url =  'http://35.236.62.168/chat/' + chatId + '/microphone/audio/answer'
+    with open(audio_answer, 'rb') as audio_file:
+        files = {'file': audio_file}
+        response = requests.post(url, files=files)
 
-
+    if response.status_code == 200:
+        audio_url = response.json()['audio_url']
+        return {'audio_url': audio_url, 'status': 'success'}
+    else:
+        raise Exception('Failed to upload audio file')
+    
+    
+    
+    
+    
     # return {"message": f"Successfully uploaded {audio_data.filename}"}
 
-    
+
     # try:
     #     with open(f'audio{audio_file.filename}', 'wb') as f:
     #         f.write(await audio_file.read())

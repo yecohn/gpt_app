@@ -28,11 +28,12 @@ class TTS:
             input=synthesis_input, voice=self.voice, audio_config=self.audio_config
         )
         # The response's audio_content is binary.
-        with open("output.m4a", "wb") as out:
+        audio_file = 'output.m4a'
+        with open(audio_file, "wb") as out:
             # Write the response to the output file.
             out.write(response.audio_content)
-            print('Audio content written to file "output.m4a"')
-        return FileResponse("output.m4a", media_type="audio/m4a")
+            print(f'Audio content written to file {audio_file}')
+        return audio_file
 
 
 # class BaseTTS:
