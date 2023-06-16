@@ -27,8 +27,8 @@ class TTS:
         response = self.client.synthesize_speech(
             input=synthesis_input, voice=self.voice, audio_config=self.audio_config
         )
-        # The response's audio_content is binary.
-        audio_file = 'output.m4a'
+        # The response's audio_content is binary
+        audio_file = '../data/output.m4a'
         with open(audio_file, "wb") as out:
             # Write the response to the output file.
             out.write(response.audio_content)

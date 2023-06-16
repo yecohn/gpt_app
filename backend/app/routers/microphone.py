@@ -33,9 +33,8 @@ async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): # 
     file_path = tts.generate_speech(answer)
 
 
-    filename = os.path.basename(file_path)
-    headers = {'Content-Disposition': f'attachment; filename={filename}'}
-    return FileResponse(file_path, headers=headers, media_type='audio/m4a')
+    # headers = {'Content-Disposition': f'attachment; filename={filename}'}
+    return FileResponse(file_path, media_type='audio/m4a')
     # response = requests.post(url, data=audio_data, headers=headers)
 
     
