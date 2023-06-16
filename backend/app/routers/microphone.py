@@ -1,13 +1,20 @@
 from fastapi import APIRouter, UploadFile, File
 from backend.engine.speech_to_text import STT
 from backend.engine.gpt import GPTClient
+from fastapi.responses import FileResponse
+from backend.engine.text_to_speech import TTS
+from fastapi.responses import FileResponse
 import tempfile
 import os
 
 
-router = APIRouter()
+
+
+tts = TTS()
 stt = STT()
 gpt = GPTClient()
+
+router = APIRouter()
 
 @router.post("/chat/{chatId}/microphone")
 async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): #  = File(...)
@@ -22,10 +29,13 @@ async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): # 
 
 
     trancript = stt.transcript(save_path)
-    gpt.answer(chatId = chatId, user_prompt = trancript)
+    answer = gpt.answer(chatId = chatId, user_prompt = trancript)
+    return tts.generate_speech(answer)
 
 
-    return {"message": f"Successfully uploaded {audio_data.filename}"}
+    # return {"message": f"Successfully uploaded {audio_data.filename}"}
+
+    
     # try:
     #     with open(f'audio{audio_file.filename}', 'wb') as f:
     #         f.write(await audio_file.read())

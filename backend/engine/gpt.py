@@ -7,10 +7,14 @@ from datetime import datetime
 from backend.app.models import Userinf
 from bson.objectid import ObjectId
 
+
+
+
 class GPTClient:
     def __init__(self):
         self.db_connector = MongoConnector('speakit')
         openai.api_key = self.api_key
+
 
     @property
     def metadata(self):
@@ -105,10 +109,11 @@ class GPTClient:
             collection_name = 'chats'
             )
 
-    def answer(self, chatId: str, user_prompt: str) -> None:
+    def answer(self, chatId: str, user_prompt: str) -> str:
 
         chat_messages = self.concatenate_chat(chatId = chatId, prompt = user_prompt)
         answer = self.query_gpt_api(messages=chat_messages)
+
         question_json = self.formulate_db_message(
             user_name = self.get_username(chatId), 
             origin = 'user', 
@@ -124,6 +129,7 @@ class GPTClient:
             setter={"$push": {"messages": {"$each": [question_json, answer_json]}}},
             collection_name="chats",
         )
+        return answer
 
     def reset_chat(self, chatId: str) -> None:
         chat = self.load_chat(chatId = chatId)
