@@ -15,9 +15,10 @@ class TTS:
         self.audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3
         )
+        self.audio_path = ''
 
     
-    def generate_speech(self, text):
+    def generate_speech(self, text: str) -> None:
 
         # Set the text input to be synthesized
         synthesis_input = texttospeech.SynthesisInput(text=text)
@@ -37,8 +38,8 @@ class TTS:
             # Write the response to the output file.
             out.write(response.audio_content)
             print(f'Audio content written to file {audio_path}')
-        return audio_path
 
+        self.audio_path = audio_path
 
 # class BaseTTS:
 #     @abstractclassmethod

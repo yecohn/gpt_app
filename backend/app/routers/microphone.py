@@ -30,14 +30,18 @@ async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): # 
 
     trancript = stt.transcript(save_path)
     answer = gpt.answer(chatId = chatId, user_prompt = trancript)
-    audio_path = tts.generate_speech(answer)
+    tts.generate_speech(answer)
 
 
-    # headers = {'Content-Disposition': f'attachment; filename={filename}'}
-    return FileResponse(audio_path, media_type='audio/m4a')
+
     # response = requests.post(url, data=audio_data, headers=headers)
 
+@router.get('/chat/{chatId}/microphone/download', response_class=FileResponse)
+async def download_audio_file(chatId: str):
     
+    filename = 'temp.wav'
+    headers = {'Content-Disposition': f'attachment; filename={filename}'}
+    return FileResponse(tts.audio_path, headers=headers, media_type='audio/m4a')
     # url = 'http://35.236.62.168/chat/' + chatId + '/microphone/audio/answer'
     # 
 
