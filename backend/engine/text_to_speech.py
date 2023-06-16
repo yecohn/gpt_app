@@ -1,5 +1,7 @@
 from google.cloud import texttospeech
 from fastapi.responses import FileResponse
+import tempfile
+import os
 
 
 class TTS:
@@ -28,12 +30,14 @@ class TTS:
             input=synthesis_input, voice=self.voice, audio_config=self.audio_config
         )
         # The response's audio_content is binary
-        audio_file = './data/output.m4a'
-        with open(audio_file, "wb") as out:
+        temp_dir = tempfile.mkdtemp()
+        audio_path = os.path.join(temp_dir, 'temp.wav')
+
+        with open(audio_path, "wb") as out:
             # Write the response to the output file.
             out.write(response.audio_content)
-            print(f'Audio content written to file {audio_file}')
-        return audio_file
+            print(f'Audio content written to file {audio_path}')
+        return audio_path
 
 
 # class BaseTTS:

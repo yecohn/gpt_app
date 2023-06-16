@@ -30,11 +30,11 @@ async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): # 
 
     trancript = stt.transcript(save_path)
     answer = gpt.answer(chatId = chatId, user_prompt = trancript)
-    file_path = tts.generate_speech(answer)
+    audio_path = tts.generate_speech(answer)
 
 
     # headers = {'Content-Disposition': f'attachment; filename={filename}'}
-    return FileResponse(file_path, media_type='audio/m4a')
+    return FileResponse(audio_path, media_type='audio/m4a')
     # response = requests.post(url, data=audio_data, headers=headers)
 
     
