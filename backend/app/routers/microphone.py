@@ -30,17 +30,23 @@ async def upload_audio_file(chatId: str, audio_data: UploadFile = File(...)): # 
 
     trancript = stt.transcript(save_path)
     answer = gpt.answer(chatId = chatId, user_prompt = trancript)
-    audio_answer = tts.generate_speech(answer)
-    url =  'http://35.236.62.168/chat/' + chatId + '/microphone/audio/answer'
-    with open(audio_answer, 'rb') as audio_file:
-        files = {'file': audio_file}
-        response = requests.post(url, files=files)
+    file_path = tts.generate_speech(answer)
 
-    if response.status_code == 200:
-        audio_url = response.json()['audio_url']
-        return {'audio_url': audio_url, 'status': 'success'}
-    else:
-        raise Exception('Failed to upload audio file')
+
+    filename = os.path.basename(file_path)
+    headers = {'Content-Disposition': f'attachment; filename={filename}'}
+    return FileResponse(file_path, headers=headers, media_type='audio/m4a')
+    # response = requests.post(url, data=audio_data, headers=headers)
+
+    
+    # url = 'http://35.236.62.168/chat/' + chatId + '/microphone/audio/answer'
+    # 
+
+    # if response.status_code == 200:
+    #     audio_url = response.json()['audio_url']
+    #     return {'audio_url': audio_url, 'status': 'success'}
+    # else:
+    #     raise Exception('Failed to upload audio file')
     
     
     
