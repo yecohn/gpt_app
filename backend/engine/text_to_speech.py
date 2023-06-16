@@ -5,8 +5,7 @@ import os
 
 
 class TTS:
-    def __init__(
-        self):
+    def __init__(self):
         self.client = texttospeech.TextToSpeechClient()
         self.voice = texttospeech.VoiceSelectionParams(
             language_code = "es-ES",
